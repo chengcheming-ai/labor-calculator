@@ -35,7 +35,8 @@ function bind(fn){
 document.querySelectorAll('.res').forEach(res=>{
   const t=document.createElement('div');t.id='tips';t.className='tips';res.appendChild(t);
   const a=document.createElement('div');a.className='act';
-  a.innerHTML='<button type="button" class="b-copy">📋 複製結果</button><button type="button" class="b-reset">↺ 清除重填</button>';res.appendChild(a);
+  a.innerHTML='<button type="button" class="b-copy">📋 複製結果</button><button type="button" class="b-print">📄 報表／存 PDF</button><button type="button" class="b-reset">↺ 清除重填</button>';res.appendChild(a);
+  a.querySelector('.b-print').onclick=()=>window.print();
   a.querySelector('.b-copy').onclick=async e=>{
     const b=e.currentTarget,h=document.querySelector('h1').textContent;
     const ins=[...document.querySelectorAll('.card .grid > div')].map(d=>{const l=d.querySelector('label'),i=d.querySelector('input,select');if(!l||!i)return'';
@@ -47,6 +48,31 @@ document.querySelectorAll('.res').forEach(res=>{
   };
   a.querySelector('.b-reset').onclick=()=>{try{localStorage.removeItem(KEY)}catch(_){}location.reload()};
 });
+
+/* 列印報表：列印前（按鈕或 Ctrl+P）即時組出白底報表，列印時只印報表 */
+function buildReport(){
+  const res=document.querySelector('.res');if(!res)return;
+  let r=$('report');if(!r){r=document.createElement('section');r.id='report';document.body.appendChild(r)}
+  const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const h=document.querySelector('h1').textContent,now=new Date(),logo=(document.querySelector('.logo img')||{}).src||'';
+  const rows=[...document.querySelectorAll('main .card .grid > div')].map(d=>{
+    const i=d.querySelector('input,select');if(!i||!i.id||i.type==='checkbox')return'';
+    const lab=_lab(i.id);let v=i.tagName==='SELECT'?i.options[i.selectedIndex].text:i.value;
+    const n=parseFloat(v);if(i.type==='number'&&!isNaN(n)&&Math.abs(n)>=1000&&!/出生年/.test(lab))v=n.toLocaleString('zh-TW');
+    return `<div><span>${esc(lab)}</span><b>${esc(v||'—')}</b></div>`}).join('');
+  const c=res.cloneNode(true);c.querySelectorAll('.act,.tips').forEach(e=>e.remove());c.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));
+  const tp=[...document.querySelectorAll('#tips .tip')].map(t=>`<li class="${t.className}">${t.innerHTML}</li>`).join('');
+  const extra=[...document.querySelectorAll('main > .card')].slice(1).map(k=>{const x=k.cloneNode(true);x.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));
+    x.querySelectorAll('input[type=checkbox]').forEach((b,j)=>{const o=k.querySelectorAll('input[type=checkbox]')[j];b.replaceWith(document.createTextNode(o&&o.checked?'☑ ':'☐ '))});return x.outerHTML}).join('');
+  r.innerHTML=`<div class="rp-top"><span class="rp-brand">${logo?`<img src="${logo}" alt="">`:''}勞工權益計算機</span><span>產生日期：${now.toLocaleDateString('zh-TW')} ${now.toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'})}</span></div>
+<h1>${esc(h)}　試算報表</h1>
+<h2>輸入資料</h2><div class="rp-in">${rows}</div>
+<h2>試算結果</h2>${c.outerHTML}
+${tp?`<h2>提醒與建議</h2><ul class="rp-tips">${tp}</ul>`:''}
+${extra}
+<p class="rp-foot">本報表由「勞工權益計算機」產生（${esc(location.href.split('?')[0])}）。試算結果僅供參考，實際金額以勞動部、勞保局公告及雇主核定為準${/budget|pension/.test(location.pathname)?'；理財內容為一般性觀念，不構成投資建議':''}。</p>`;
+}
+addEventListener('beforeprint',buildReport);
 
 /* 提示條：list = [[id, 等級(ok/info/warn/alert/danger), 文字], ...]，只有新出現或等級改變的才會播放動畫 */
 function tips(list){

@@ -130,6 +130,48 @@ h3.grp:first-child{margin-top:0}
 .tt{position:fixed;z-index:50;pointer-events:none;padding:6px 10px;border-radius:8px;background:#0e1530;border:1px solid var(--in-b);color:#fff;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.4);white-space:nowrap}
 @media (max-width:480px){.rank .row{grid-template-columns:4.8em 1fr 3em 4.8em;gap:6px;font-size:13px}}
 
+/* 列印報表（白底，只在列印時出現） */
+#report{display:none}
+@media print{
+  @page{size:A4;margin:14mm 14mm 16mm}
+  html,body{background:#fff!important}
+  body>*:not(#report){display:none!important}
+  #report{display:block;color:#111;font:11pt/1.6 "Noto Sans TC","Microsoft JhengHei","PingFang TC",sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #report *{color:#111;-webkit-text-fill-color:currentColor;text-shadow:none!important;filter:none!important;box-shadow:none!important;animation:none!important;backdrop-filter:none!important}
+  #report .rp-top{display:flex;justify-content:space-between;align-items:center;font-size:9.5pt;color:#555;border-bottom:2px solid #1f6feb;padding-bottom:6px}
+  #report .rp-top *{color:#555}
+  #report .rp-brand{display:flex;align-items:center;gap:6px;font-weight:700;font-size:11pt}#report .rp-brand,#report .rp-brand *{color:#1f6feb}
+  #report .rp-brand img{width:20px;height:20px}
+  #report h1{font-size:19pt;margin:12px 0 4px;background:none;-webkit-text-fill-color:#111}
+  #report h2{font-size:12.5pt;margin:18px 0 8px;padding-bottom:3px;border-bottom:1px solid #bbb;break-after:avoid}
+  #report h2::before{display:none}
+  #report h3.grp{font-size:11pt;margin:10px 0 6px}
+  #report table{width:100%;border-collapse:collapse;font-size:10.5pt}
+  #report th,#report td{border-bottom:1px solid #ddd;padding:5px 6px;color:#111}
+  #report .rp-in{display:grid;grid-template-columns:1fr 1fr;column-gap:28px;font-size:10.5pt}
+  #report .rp-in div{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid #ddd;padding:4px 2px;break-inside:avoid}
+  #report .rp-in span{color:#444}
+  #report td.n{text-align:right;font-weight:600}
+  #report .res{background:none;border:1px solid #ccc;border-radius:8px;padding:12px 14px;margin:0;color:#333}
+  #report .big{font-size:22pt;margin:2px 0 6px;background:none;-webkit-text-fill-color:#0b4fb3;color:#0b4fb3}
+  #report .seg b,#report .seg b *{color:#fff;-webkit-text-fill-color:#fff}
+  #report .mbar>div{position:absolute;right:0;top:0;bottom:0;background:#e5e7eb;border-radius:0 999px 999px 0}
+  #report .mbar i{background:#666}
+  #report .rank .bar{background:#eef0f3}
+  #report .card{background:none;border:none;padding:0;margin:0;border-radius:0}
+  #report .card h2{margin-top:18px}
+  #report .rp-tips{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+  #report .rp-tips li{margin:0 0 6px;break-inside:avoid}
+  #report .steps li{background:none;border:1px solid #ccc;break-inside:avoid;opacity:1}
+  #report .steps li.now{border:1.5px solid #1f6feb}
+  #report .steps li::before,#report .steps li::before{color:#fff;-webkit-text-fill-color:#fff}
+  #report .check label{border-bottom:1px solid #ddd;padding:5px 0}
+  #report .check span{text-decoration:none}
+  #report a{text-decoration:none}
+  #report .note,#report .rp-foot{color:#666;font-size:9pt}
+  #report .rp-foot{margin-top:20px;border-top:1px solid #ccc;padding-top:8px}
+}
+
 /* 表格 */
 table{width:100%;border-collapse:collapse;font-size:15px}
 th,td{border-bottom:1px solid var(--line);padding:9px 6px;text-align:left}
