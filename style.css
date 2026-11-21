@@ -130,17 +130,44 @@ h3.grp:first-child{margin-top:0}
 .tt{position:fixed;z-index:50;pointer-events:none;padding:6px 10px;border-radius:8px;background:#0e1530;border:1px solid var(--in-b);color:#fff;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.4);white-space:nowrap}
 @media (max-width:480px){.rank .row{grid-template-columns:4.8em 1fr 3em 4.8em;gap:6px;font-size:13px}}
 
-/* 延伸閱讀 */
-.news{margin:6px 0 26px}
-.news h2{margin-top:8px}
-.news .note{margin:-4px 0 12px}
-.nl{display:grid;gap:10px}
-.ni{display:grid;grid-template-columns:1fr auto;grid-template-areas:"meta ar" "t ar";gap:4px 14px;align-items:center;padding:14px 16px;border-radius:12px;text-decoration:none;color:var(--fg);background:var(--card);border:1px solid var(--card-b);transition:transform .2s,border-color .2s,box-shadow .2s}
-.ni:hover{transform:translateY(-2px);border-color:rgba(76,201,240,.5);box-shadow:0 10px 30px rgba(0,0,0,.4),0 0 18px rgba(76,201,240,.15)}
-.nmeta{grid-area:meta;font-size:12.5px;color:var(--dim);display:flex;gap:10px;align-items:center}
-.nmeta b{color:#ffd08a;font-weight:600;padding:1px 8px;border-radius:999px;background:rgba(255,179,71,.12);border:1px solid rgba(255,179,71,.28)}
-.nt{grid-area:t;font-size:15.5px;line-height:1.55;color:#eef2fb}
-.ar{grid-area:ar;color:var(--acc);font-size:18px}
+/* 媒體報導精選（獨立區塊） */
+.news-box{position:relative;margin:8px 0 30px;padding:22px;border-radius:18px;
+  background:linear-gradient(160deg,rgba(255,179,71,.07),rgba(139,123,255,.06) 60%,rgba(255,255,255,.02));
+  border:1px solid rgba(255,179,71,.28);box-shadow:0 12px 40px rgba(0,0,0,.35)}
+.news-box::before{content:"";position:absolute;left:22px;right:22px;top:0;height:3px;border-radius:0 0 3px 3px;background:linear-gradient(90deg,#ffb347,#8b7bff)}
+.nb-h{display:flex;justify-content:space-between;align-items:flex-end;gap:10px 16px;flex-wrap:wrap;margin-bottom:14px}
+.nb-h h2{margin:4px 0 4px}
+.nb-h h2::before{background:linear-gradient(#ffb347,#8b7bff)}
+.nb-h .note{margin:0}
+.nb-all{font-size:14px;color:#ffd08a;text-decoration:none;padding:6px 14px;border-radius:999px;border:1px solid rgba(255,179,71,.35);background:rgba(255,179,71,.08);white-space:nowrap;transition:box-shadow .2s,border-color .2s}
+.nb-all:hover{border-color:#ffb347;box-shadow:0 0 14px rgba(255,179,71,.3)}
+.nl{display:grid;gap:12px}
+.ni{padding:14px 16px;border-radius:12px;background:rgba(7,11,24,.55);border:1px solid var(--card-b);transition:border-color .2s,box-shadow .2s}
+.ni:hover{border-color:rgba(255,179,71,.45);box-shadow:0 0 18px rgba(255,179,71,.12)}
+.nsrc{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;font-size:13px;color:var(--dim)}
+.nlab{font-size:12px;color:var(--dim);border:1px solid var(--line);border-radius:4px;padding:0 5px}
+.nmedia{color:#ffd08a;font-weight:700;font-size:14px}
+.nhost{color:var(--mut)}
+.ntopic{margin-left:auto;font-size:12.5px;color:var(--acc);text-decoration:none}
+.ntopic:hover{text-decoration:underline}
+.nt{display:block;margin:6px 0 10px;font-size:16px;line-height:1.6;font-weight:600;color:#fff;text-decoration:none}
+.nt:hover{color:#ffe1b0;text-decoration:underline}
+.nact{display:flex;gap:8px;flex-wrap:wrap}
+.nbtn,.ncite{font:inherit;font-size:13px;padding:5px 12px;border-radius:999px;cursor:pointer;text-decoration:none;transition:box-shadow .2s,border-color .2s}
+.nbtn{color:#1a1205;background:linear-gradient(90deg,#ffc56b,#ffb347);border:1px solid #ffb347;font-weight:700}
+.nbtn:hover{box-shadow:0 0 14px rgba(255,179,71,.45)}
+.ncite{color:var(--fg);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.18)}
+.ncite:hover{border-color:var(--acc)}
+.ncopy{margin:14px 0 0;font-size:12.5px;color:var(--dim);line-height:1.6}
+/* 精選報導頁 */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px}
+.chip{font:inherit;font-size:14px;padding:7px 14px;border-radius:999px;cursor:pointer;color:var(--mut);background:var(--card);border:1px solid var(--card-b);transition:all .2s}
+.chip b{color:var(--dim);font-weight:500;margin-left:4px}
+.chip:hover{color:#fff;border-color:rgba(255,179,71,.45)}
+.chip.on{color:#1a1205;background:linear-gradient(90deg,#ffc56b,#ffb347);border-color:#ffb347;font-weight:700}
+.chip.on b{color:#4a3510}
+.ngroup{margin-bottom:26px}
+.ngroup h2 a{font-size:13px;font-weight:500;color:var(--acc);text-decoration:none;margin-left:10px}
 
 /* 列印報表（白底，只在列印時出現） */
 #report{display:none}

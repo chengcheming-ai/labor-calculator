@@ -2,14 +2,14 @@
 <title>資遣費計算機｜勞工權益計算機</title><meta name="description" content="資遣費怎麼算？輸入到職日、離職日與平均工資，自動計算勞退新制、舊制資遣費與預告工資，被資遣前先算清楚。"><link rel="canonical" href="https://chengcheming-ai.github.io/labor-calculator/severance/">
 <meta property="og:title" content="資遣費計算機｜勞工權益計算機"><meta property="og:description" content="資遣費怎麼算？輸入到職日、離職日與平均工資，自動計算勞退新制、舊制資遣費與預告工資，被資遣前先算清楚。"><meta property="og:type" content="website">
 <link rel="icon" href="../icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="../apple-touch-icon.png"><link rel="stylesheet" href="../style.css"></head><body>
-<header><div class="in"><a class="logo" href="../"><img src="../icon.svg" alt="" width="28" height="28" style="vertical-align:-7px;margin-right:6px">勞工權益計算機</a><nav><a href="../overtime/">加班費</a><a href="../annual-leave/">特休天數</a><a href="../severance/" class=on>資遣費</a><a href="../pension/">勞退自提</a><a href="../labor-insurance/">勞保年金</a><a href="../budget/">開銷規劃</a></nav></div></header>
+<header><div class="in"><a class="logo" href="../"><img src="../icon.svg" alt="" width="28" height="28" style="vertical-align:-7px;margin-right:6px">勞工權益計算機</a><nav><a href="../overtime/">加班費</a><a href="../annual-leave/">特休天數</a><a href="../severance/" class=on>資遣費</a><a href="../pension/">勞退自提</a><a href="../labor-insurance/">勞保年金</a><a href="../budget/">開銷規劃</a><a href="../news/">精選報導</a></nav></div></header>
 <main>
 <h1>資遣費計算機</h1><p class="lead">依《勞工退休金條例》第12條（新制）與《勞動基準法》第16、17條（舊制、預告期間）計算。</p>
 <div class="card"><div class="grid"><div><label for="st">到職日</label><input id="st" min="1950-01-01" max="2100-12-31" type="date" value="2019-06-01" ></div><div><label for="ed">離職日</label><input id="ed" min="1950-01-01" max="2100-12-31" type="date" value="2026-11-30" ></div><div><label for="sal">平均工資（月，元）</label><input id="sal" min="0" max="1000000" data-why="平均工資請輸入 0～100 萬元之間的金額" type="number" value="40000" ></div>
 <div><label for="sys">退休金制度</label><select id="sys"><option value="new">勞退新制（2005/7/1後到職多為此制）</option><option value="old">勞退舊制</option></select></div></div>
 <div class="res">資遣費 <div class="big" id="sev">-</div><p id="det"></p>若公司未依法預告，另應給付預告工資 <b id="nt">-</b></div></div>
 <div class="card"><h2 style="margin-top:0">📝 離職檢核清單 <span id="ckn" class="note"></span></h2><div class="check"><label><input type="checkbox" id="ck1"><span>向公司索取「非自願離職證明」（申請失業給付必備）</span></label><label><input type="checkbox" id="ck2"><span>確認資遣費在離職後 30 天內入帳</span></label><label><input type="checkbox" id="ck3"><span>未休特休要折算工資（可用<a href="../annual-leave/">特休計算機</a>試算）</span></label><label><input type="checkbox" id="ck4"><span>預告期間每週可請 2 天有薪「謀職假」去面試</span></label><label><input type="checkbox" id="ck5"><span>離職後 2 年內到就業服務站申請失業給付（月投保薪資 60%，最長 6 個月）</span></label><label><input type="checkbox" id="ck6"><span>確認勞保、健保已轉出，或轉到新公司／區公所</span></label></div></div>
-<section class="news" id="news" data-k="severance"></section>
+<section class="news-box" id="news" data-k="severance"></section>
 <article><h2>資遣費計算方式</h2>
 <p><b>新制：</b>每滿 1 年發給 1/2 個月平均工資，未滿 1 年按比例計算，最高以 6 個月平均工資為限。</p>
 <p><b>舊制：</b>每滿 1 年發給 1 個月平均工資，剩餘月數按比例計算，未滿 1 個月以 1 個月計。</p>

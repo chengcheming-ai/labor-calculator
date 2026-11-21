@@ -49,14 +49,43 @@ document.querySelectorAll('.res').forEach(res=>{
   a.querySelector('.b-reset').onclick=()=>{try{localStorage.removeItem(KEY)}catch(_){}location.reload()};
 });
 
-/* 延伸閱讀：讀取 news.js，只顯示半年內的文章，新的排前面 */
+/* 媒體報導精選：讀取 news.js，只顯示半年內的文章，新的排前面；每篇都標示出處並可複製引用格式 */
+const NEWS_TOPICS={overtime:['加班費','⏱️'],'annual-leave':['特休天數','🏖️'],severance:['資遣費','📦'],pension:['勞退自提','🏦'],'labor-insurance':['勞保年金','👵'],budget:['開銷規劃','💰']};
+const _nesc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const _npre=()=>{const h=(document.querySelector('.logo')||{}).getAttribute?document.querySelector('.logo').getAttribute('href'):'./';return h==='./'?'':h};
+function newsList(k){
+  if(!window.NEWS)return[];
+  const keys=k==='*'?Object.keys(NEWS.items):[k];
+  return keys.flatMap(t=>(NEWS.items[t]||[]).map(x=>({...x,k:t})))
+    .filter(x=>(Date.now()-new Date(x.d))/864e5<=186&&/^https:\/\//.test(x.u))
+    .sort((a,b)=>b.d.localeCompare(a.d));
+}
+function newsCite(x){return `「${x.t}」，${x.m}，${x.d.replace(/-/g,'/')}。${x.u}`}
+function newsCard(x,showTopic){
+  let host='';try{host=new URL(x.u).hostname.replace(/^www\./,'')}catch(e){}
+  const tp=NEWS_TOPICS[x.k]||['',''],pre=_npre();
+  return `<article class="ni">
+<div class="nsrc"><span class="nlab">出處</span><b class="nmedia">${_nesc(x.m)}</b><span class="nhost">${_nesc(host)}</span><span class="ndate">${_nesc(x.d.replace(/-/g,'/'))}</span>${showTopic&&tp[0]?`<a class="ntopic" href="${pre}${x.k}/">${tp[1]} ${tp[0]}計算機</a>`:''}</div>
+<a class="nt" href="${_nesc(x.u)}" target="_blank" rel="noopener noreferrer">${_nesc(x.t)}</a>
+<div class="nact"><a class="nbtn" href="${_nesc(x.u)}" target="_blank" rel="noopener noreferrer">閱讀原文 ↗</a><button type="button" class="ncite" data-cite="${_nesc(newsCite(x))}">📋 複製出處</button></div>
+</article>`;
+}
+const NEWS_COPYRIGHT='文章著作權屬各原媒體所有，本站僅列出標題與出處，並連結至原文。引用或轉載時，請註明原媒體名稱、發布日期與原文網址。';
+document.addEventListener('click',async e=>{
+  const b=e.target.closest('.ncite');if(!b)return;const t=b.dataset.cite;
+  try{await navigator.clipboard.writeText(t)}catch(_){const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove()}
+  b.textContent='✅ 已複製出處';setTimeout(()=>b.textContent='📋 複製出處',1800);
+});
 (()=>{
   const s=$('news');if(!s||!window.NEWS)return;
-  const esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-  const L=(NEWS.items[s.dataset.k]||[]).filter(x=>(Date.now()-new Date(x.d))/864e5<=186&&/^https:\/\//.test(x.u)).sort((a,b)=>b.d.localeCompare(a.d)).slice(0,5);
+  const k=s.dataset.k,all=k==='*',L=newsList(k).slice(0,all?4:5);
   if(!L.length){s.remove();return}
-  s.innerHTML=`<h2>📰 延伸閱讀</h2><p class="note">精選天下、經理人、商周、遠見、今周刊等媒體近半年的相關報導・更新於 ${esc(NEWS.updated)}</p><div class="nl">`+
-    L.map(x=>`<a class="ni" href="${esc(x.u)}" target="_blank" rel="noopener noreferrer"><span class="nmeta"><b>${esc(x.m)}</b>${esc(x.d.replace(/-/g,'/'))}</span><span class="nt">${esc(x.t)}</span><span class="ar" aria-hidden="true">↗</span></a>`).join('')+'</div>';
+  const pre=_npre(),tp=NEWS_TOPICS[k];
+  s.innerHTML=`<div class="nb-h"><div><h2>📰 ${all?'最新媒體報導':'媒體報導精選'}</h2>
+<p class="note">${all?'':`與「${tp?tp[0]:''}」相關、`}精選天下雜誌、經理人、商業周刊、遠見雜誌、今周刊近半年的報導・更新於 ${_nesc(NEWS.updated)}</p></div>
+<a class="nb-all" href="${pre}news/">看全部精選報導 →</a></div>
+<div class="nl">${L.map(x=>newsCard(x,all)).join('')}</div>
+<p class="ncopy">© ${NEWS_COPYRIGHT}</p>`;
 })();
 
 /* 列印報表：列印前（按鈕或 Ctrl+P）即時組出白底報表，列印時只印報表 */
