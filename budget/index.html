@@ -1,0 +1,88 @@
+<!doctype html><html lang="zh-Hant-TW"><head><meta charset="utf-8"><meta name="theme-color" content="#070b18"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>開銷計算機｜勞工權益計算機</title><meta name="description" content="每個月能存多少錢？輸入收入與房租、伙食、交通等開銷，自動算出儲蓄率、50/30/20 收入分配，並依你的狀況建議緊急預備金、還債、投資等理財方向。"><link rel="canonical" href="https://chengcheming-ai.github.io/labor-calculator/budget/">
+<meta property="og:title" content="開銷計算機｜勞工權益計算機"><meta property="og:description" content="每個月能存多少錢？輸入收入與房租、伙食、交通等開銷，自動算出儲蓄率、50/30/20 收入分配，並依你的狀況建議緊急預備金、還債、投資等理財方向。"><meta property="og:type" content="website">
+<link rel="icon" href="../icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="../apple-touch-icon.png"><link rel="stylesheet" href="../style.css"></head><body>
+<header><div class="in"><a class="logo" href="../"><img src="../icon.svg" alt="" width="28" height="28" style="vertical-align:-7px;margin-right:6px">勞工權益計算機</a><nav><a href="../overtime/">加班費</a><a href="../annual-leave/">特休天數</a><a href="../severance/">資遣費</a><a href="../pension/">勞退自提</a><a href="../labor-insurance/">勞保年金</a><a href="../budget/" class=on>開銷規劃</a></nav></div></header>
+<main>
+<h1>開銷計算機</h1><p class="lead">輸入每月收入和各項開銷，馬上知道每個月能存多少、錢都花到哪裡，並依你的狀況給出理財方向。</p>
+<div class="card">
+<h3 class="grp">💰 每月收入</h3><div class="grid"><div><label for="inc">月實領薪資（元）</label><input id="inc" min="0" max="10000000" data-why="收入請輸入 0～1,000 萬元之間" type="number" value="50000" inputmode="numeric"></div><div><label for="oth">其他收入（副業、租金等）</label><input id="oth" min="0" max="10000000" data-why="收入請輸入 0～1,000 萬元之間" type="number" value="0" inputmode="numeric"></div></div>
+<h3 class="grp"><i class="sw" style="background:var(--c-need)"></i>必要開銷</h3><div class="grid">
+<div><label for="rent">居住（房租／房貸）</label><input id="rent" min="0" max="1000000" data-why="金額請輸入 0～100 萬元之間" type="number" value="15000" inputmode="numeric"></div><div><label for="food">伙食</label><input id="food" min="0" max="1000000" data-why="金額請輸入 0～100 萬元之間" type="number" value="9000" inputmode="numeric"></div><div><label for="trans">交通</label><input id="trans" min="0" max="1000000" data-why="金額請輸入 0～100 萬元之間" type="number" value="2500" inputmode="numeric"></div><div><label for="bill">水電瓦斯、網路電話</label><input id="bill" min="0" max="1000000" data-why="金額請輸入 0～100 萬元之間" type="number" value="2500" inputmode="numeric"></div>
+<div><label for="ins">保險</label><input id="ins" min="0" max="1000000" data-why="金額請輸入 0～100 萬元之間" type="number" value="2500" inputmode="numeric"></div><div><label for="fam">孝親費</label><input id="fam" min="0" max="1000000" data-why="金額請輸入 0～100 萬元之間" type="number" value="5000" inputmode="numeric"></div><div><label for="edu">子女教育</label><input id="edu" min="0" max="1000000" data-why="金額請輸入 0～100 萬元之間" type="number" value="0" inputmode="numeric"></div><div><label for="debt">其他貸款、卡費</label><input id="debt" min="0" max="1000000" data-why="金額請輸入 0～100 萬元之間" type="number" value="0" inputmode="numeric"></div></div>
+<h3 class="grp"><i class="sw" style="background:var(--c-want)"></i>想要開銷</h3><div class="grid"><div><label for="fun">娛樂、購物、旅遊</label><input id="fun" min="0" max="1000000" data-why="金額請輸入 0～100 萬元之間" type="number" value="5000" inputmode="numeric"></div><div><label for="misc">其他雜支</label><input id="misc" min="0" max="1000000" data-why="金額請輸入 0～100 萬元之間" type="number" value="1500" inputmode="numeric"></div></div>
+<h3 class="grp">🎯 存款與目標</h3><div class="grid"><div><label for="cash">目前存款（元）</label><input id="cash" min="0" max="1000000000" data-why="金額請輸入 0～10 億元之間" type="number" value="100000" inputmode="numeric"></div><div><label for="goal">存錢目標（元）</label><input id="goal" min="0" max="1000000000" data-why="金額請輸入 0～10 億元之間" type="number" value="1000000" inputmode="numeric"></div></div>
+<div class="res">每個月可以存 <div class="big" id="save">-</div><p id="sub"></p>
+<div class="seg-h"><span>收入分配</span><span class="note">建議比例 50／30／20</span></div>
+<div class="seg" id="seg"></div><div class="seg ideal" aria-hidden="true"><b style="flex:50"></b><b style="flex:30"></b><b style="flex:20"></b></div>
+<div class="legend" id="lg"></div>
+<div class="seg-h" style="margin-top:22px"><span>各項開銷占收入比例</span></div><div class="rank" id="rank"></div></div></div>
+<div class="card"><h2 style="margin-top:0">🧭 建議的理財方向</h2><ol class="steps" id="steps"></ol>
+<p class="note">以上是一般性理財觀念，依你輸入的數字排出優先順序，不構成任何投資建議；投資有風險，請依自身狀況評估。</p></div>
+<div id="tt" class="tt" hidden></div>
+<article><h2>什麼是 50／30／20 法則？</h2>
+<p>把每月收入分成三份：<b>50% 用在必要開銷</b>（房租、伙食、交通、保險等），<b>30% 用在想要的開銷</b>（娛樂、購物、旅遊），<b>至少 20% 存下來</b>。這是最常見的入門理財比例，可以依自己的生活調整，但儲蓄率越高，離財務自由越近。</p>
+<h2>緊急預備金要存多少？</h2><p>一般建議存下 <b>6 個月的必要開銷</b>，放在隨時領得出來的活存或定存，用來應付失業、生病等突發狀況。存滿之後，再把多餘的錢拿去做長期投資。</p>
+<h2>常見問題</h2>
+<p><b>Q：房租占收入多少比例才合理？</b><br>一般建議不超過收入的 30%，超過的話，其他開銷和儲蓄都會被壓縮。</p>
+<p><b>Q：保險費要繳多少？</b><br>常見的參考是不超過收入的 10%，先求醫療、意外、失能等基本保障，再考慮其他。</p>
+<p><b>Q：存不到錢怎麼辦？</b><br>先記帳一個月找出錢的去向，從「想要」類開銷開始砍；也可以用「先存再花」的方式，發薪日一到就自動轉帳到儲蓄帳戶。</p></article></main>
+<footer><div class="in">本站試算結果僅供參考，實際金額以勞動部、勞保局公告及雇主核定為準。　<a href="../about/">關於本站</a>　<a href="../privacy/">隱私權政策</a><br>© 2026 勞工權益計算機</div></footer>
+<script src="../common.js"></script><script>const NEED=[['rent','居住'],['food','伙食'],['trans','交通'],['bill','水電通訊'],['ins','保險'],['fam','孝親費'],['edu','子女教育'],['debt','貸款卡費']],WANT=[['fun','娛樂購物'],['misc','其他雜支']];
+const pc=x=>x===0?'0%':(x*100).toFixed(x>=0.1||x<=-0.1?0:1)+'%';
+const tt=$('tt');
+document.addEventListener('pointermove',e=>{const t=e.target.closest('[data-tip]');if(!t){tt.hidden=true;return}tt.hidden=false;tt.textContent=t.dataset.tip;
+ const x=Math.min(e.clientX+14,innerWidth-tt.offsetWidth-8);tt.style.left=x+'px';tt.style.top=(e.clientY+16)+'px'});
+document.addEventListener('pointerleave',()=>tt.hidden=true);
+bind(()=>{
+const I=num('inc')+num('oth'),items=[...NEED.map(([k,n])=>({k,n,v:num(k),g:'need'})),...WANT.map(([k,n])=>({k,n,v:num(k),g:'want'}))];
+const N=items.filter(i=>i.g==='need').reduce((a,i)=>a+i.v,0),W=items.filter(i=>i.g==='want').reduce((a,i)=>a+i.v,0),S=I-N-W,r=I>0?S/I:0,cash=num('cash'),goal=num('goal'),E=6*N;
+$('save').textContent=(S<0?'-':'')+fmt(Math.abs(S))+' 元';
+$('sub').innerHTML=I>0?`儲蓄率 <b>${pc(r)}</b>　｜　一年${S<0?'透支':'可存'} <b>${fmt(Math.abs(S)*12)} 元</b>`:'';
+// 收入分配分段長條
+const tot=Math.max(I,N+W),parts=[['need','必要',N],['want','想要',W],['save','儲蓄',Math.max(S,0)]];
+$('seg').innerHTML=tot>0?parts.filter(p=>p[2]>0).map(p=>{const s=p[2]/tot;return `<b class="${p[0]}" style="flex:${p[2]}" data-tip="${p[1]} ${fmt(p[2])} 元（${pc(I>0?p[2]/I:0)}）">${s>=0.09?pc(I>0?p[2]/I:s):''}</b>`}).join(''):'';
+const ideal={need:'≤ 50%',want:'≤ 30%',save:'≥ 20%'};
+$('lg').innerHTML=parts.map(p=>`<span><i class="sw ${p[0]}"></i>${p[1]} <b>${I>0?pc(p[2]/I):'-'}</b> <em>建議 ${ideal[p[0]]}</em></span>`).join('')+(S<0?`<span class="neg">透支 <b>${fmt(-S)} 元</b></span>`:'');
+// 各項開銷排行
+const rk=items.filter(i=>i.v>0).sort((a,b)=>b.v-a.v),mx=rk.length?rk[0].v:1;
+$('rank').innerHTML=rk.map(i=>`<div class="row" data-tip="${i.n} ${fmt(i.v)} 元／月"><span class="nm">${i.n}</span><span class="bar"><b class="${i.g}" style="width:${Math.max(i.v/mx*100,1.5)}%"></b></span><span class="pv">${I>0?pc(i.v/I):'-'}</span><span class="av">${fmt(i.v)}</span></div>`).join('')||'<p class="note">還沒有輸入任何開銷</p>';
+// 互動提醒
+const T=[],f=x=>fmt(x)+' 元';
+if(I<=0)T.push(['lv','info','先輸入每月收入，才能開始算喔 💰']);
+else if(S<0)T.push(['lv','danger',`每月透支 ${f(-S)}！錢包在流血 🩸 先從「想要」類開銷開始砍，再檢查貸款和卡費。`]);
+else if(r<0.1)T.push(['lv','warn',`月光邊緣人警報 🚨 每月只剩 ${f(S)}。試試把娛樂購物砍掉兩成，每月就能多存 ${f(num('fun')*0.2)}！`]);
+else if(r<0.2)T.push(['lv','info',`有在存了，不錯喔 👍 再拚一下到 20% 就是理財模範生，每月還差 ${f(I*0.2-S)}。`]);
+else if(r<0.3)T.push(['lv','ok',`理財模範生 🏅 儲蓄率 ${pc(r)}，已經達到 50／30／20 法則的標準！`]);
+else if(r<0.5)T.push(['lv','ok',`存錢高手 💎 儲蓄率 ${pc(r)}，未來的你會跪謝現在的你 🙏`]);
+else T.push(['lv','ok',`存錢大師 🧘 儲蓄率超過一半！提早退休（FIRE）不是夢 🔥`]);
+celebrate('r30',I>0&&r>=0.3);celebrate('r50',I>0&&r>=0.5);
+if(I>0){
+ if(N/I>0.5)T.push(['need','info',`必要開銷占收入 ${pc(N/I)}，超過 50% 的建議比例。先從金額最大的項目檢視，看看有沒有更省的方案 🔍`]);
+ if(num('rent')/I>0.3)T.push(['rent','warn',`居住支出占收入 ${pc(num('rent')/I)}，超過 30% 的建議上限，房東笑得比你開心 🏠`]);
+ if(num('debt')/I>0.2)T.push(['debt','warn',`貸款、卡費占收入 ${pc(num('debt')/I)}。如果有卡費循環（年利率最高約 15%），請優先還清它！💳`]);
+ if(num('ins')/I>0.1)T.push(['ins','info',`保費占收入 ${pc(num('ins')/I)}，超過 10% 可能保太多了，找時間檢視一下保單 📄`]);
+ if(num('ins')===0)T.push(['ins','info','完全沒有保費？建議至少要有醫療險、意外險這類基本保障 🛡️']);
+ if(W/I>0.3)T.push(['want','info',`想要類開銷占 ${pc(W/I)}，超過 30%。享受人生沒問題，但也要顧好錢包 🛍️`]);
+ if(num('inc')>0&&num('inc')<29500)T.push(['min','info','月薪低於 2026 年最低工資 29,500 元，如果是全職工作，老闆可能違法囉 👀']);
+}
+if(goal>0){
+ if(cash>=goal)T.push(['goal','ok',`已經達成 ${fmt(goal)} 元的存錢目標了！🎉 可以設定下一個更大的目標`]);
+ else if(S>0){const mo=Math.ceil((goal-cash)/S),y=Math.floor(mo/12),m=mo%12;
+  T.push(['goal',mo>600?'warn':'info',mo>600?`照目前的速度，要存 50 年以上才能達標 😵 建議提高儲蓄率，或讓投資複利幫你一把`:`照目前的速度，大約 ${y?y+' 年 ':''}${m?m+' 個月':''}就能存到 ${f(goal)} 🎯`])}
+}
+celebrate('goal',goal>0&&cash>=goal);
+tips(T);
+// 理財方向
+const st=[];
+st.push([S>0,'收支平衡，每月有結餘',S>0?`每月結餘 ${f(S)}，基本功完成！`:'先記帳一個月，找出可以刪減的開銷，目標是讓每個月都有結餘。']);
+const hasDebt=num('debt')>0;
+st.push([!hasDebt,'還清高利負債',hasDebt?'卡費循環、信用貸款等高利負債優先還清；房貸、學貸這類低利貸款照常繳就好。':'沒有填寫貸款或卡費，很棒！']);
+st.push([cash>=E&&E>0,'存好緊急預備金',E<=0?'先填寫必要開銷，才能算出預備金目標。':cash>=E?`目前存款 ${f(cash)}，已達 6 個月必要開銷（${f(E)}）。`:`目標是 6 個月必要開銷：${f(E)}，還差 ${f(E-cash)}${S>0?`，以目前的速度約 ${Math.ceil((E-cash)/S)} 個月存滿`:''}。放在高利活存或定存，不要拿去投資。`]);
+st.push([num('ins')>0,'備妥基本保障',num('ins')>0?'已有保險支出，每 2～3 年檢視一次保單就好。':'優先規劃醫療險、意外險；有家人要照顧的話，再考慮定期壽險。']);
+st.push([null,'勞退自提 6%','自提的金額可以從所得中扣除，有節稅效果，還有政府保證收益。<a href="../pension/">用勞退計算機試算 →</a>']);
+st.push([null,'長期投資：定期定額',S>0?`預備金存滿後，可以把每月結餘的 5～7 成（約 ${f(S*0.5)}～${f(S*0.7)}）定期定額投入市值型 ETF，例如追蹤台股大盤或全球市場的指數基金。至少放 5～10 年，不追高殺低。`:'先讓每月有結餘，再開始長期投資。']);
+let cur=false;
+$('steps').innerHTML=st.map(([done,t,d])=>{let c,b;if(done===true){c='done';b='✅ 已完成'}else if(!cur){cur=true;c='now';b='👉 現在做這步'}else{c='later';b='⏳ 之後'}
+ return `<li class="${c}"><div class="sh"><b>${t}</b><span class="bd">${b}</span></div><p>${d}</p></li>`}).join('');
+})</script></body></html>
