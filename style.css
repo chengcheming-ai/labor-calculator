@@ -169,6 +169,65 @@ h3.grp:first-child{margin-top:0}
 .ngroup{margin-bottom:26px}
 .ngroup h2 a{font-size:13px;font-weight:500;color:var(--acc);text-decoration:none;margin-left:10px}
 
+/* 主題切換按鈕 */
+.theme-btn{margin-left:auto;font:inherit;font-size:13px;padding:6px 13px;border-radius:999px;border:1px solid var(--card-b);background:var(--card);color:var(--fg);cursor:pointer;white-space:nowrap;transition:border-color .2s,box-shadow .2s}
+.theme-btn:hover{border-color:var(--acc);box-shadow:0 0 12px rgba(76,201,240,.25)}
+@media (max-width:720px){.theme-btn{order:2}header nav{order:3;flex-basis:100%}}
+
+/* 淺色主題（按鈕切換；預設為深色） */
+:root[data-theme="light"]{
+  color-scheme:light;
+  --bg:#f4f6fb;--card:#ffffff;--card-b:#dde3ee;
+  --fg:#1b2333;--mut:#4f5b72;--dim:#76819a;
+  --acc:#0b72c9;--acc2:#6a55e0;
+  --in:#ffffff;--in-b:#cbd4e3;--line:#e3e8f0;
+  --c-need:#2a78d6;--c-want:#eb6834;--c-save:#1baf7a;
+}
+:root[data-theme="light"] body{background:
+  radial-gradient(900px 500px at 15% -10%,rgba(11,114,201,.10),transparent 60%),
+  radial-gradient(800px 500px at 95% 0%,rgba(106,85,224,.09),transparent 60%),
+  radial-gradient(700px 600px at 50% 110%,rgba(255,170,60,.08),transparent 60%),var(--bg)}
+:root[data-theme="light"] header{background:rgba(255,255,255,.82)}
+:root[data-theme="light"] nav a.on{text-shadow:none}
+:root[data-theme="light"] h1{background:linear-gradient(90deg,#14213d 0%,#1f4fa3 60%,#5b46c9 100%);-webkit-background-clip:text;background-clip:text}
+:root[data-theme="light"] :is(h2,h3.grp,.steps .sh b,td.n,.nt){color:#111a2e}
+:root[data-theme="light"] .res b,:root[data-theme="light"] article:not(.ni) b{color:#111a2e}
+:root[data-theme="light"] .card{box-shadow:0 6px 24px rgba(20,30,60,.07)}
+:root[data-theme="light"] :is(input,select){color:#111a2e}
+:root[data-theme="light"] :is(input:hover,select:hover){border-color:#9fb0d0}
+:root[data-theme="light"] input::-webkit-calendar-picker-indicator{filter:none}
+:root[data-theme="light"] select option{background:#fff;color:#111a2e}
+:root[data-theme="light"] .lim{color:#9a5200;background:rgba(255,170,60,.14);border-color:rgba(220,140,40,.38)}
+:root[data-theme="light"] .res{background:linear-gradient(160deg,rgba(11,114,201,.06),rgba(106,85,224,.06));border-color:rgba(11,114,201,.22);box-shadow:none}
+:root[data-theme="light"] .big{background:linear-gradient(90deg,#0b72c9,#6a55e0);-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 0 10px rgba(11,114,201,.18))}
+:root[data-theme="light"] .tip{color:#1b2333}
+:root[data-theme="light"] .tip.warn{background:rgba(255,200,40,.16)}
+:root[data-theme="light"] .act button,:root[data-theme="light"] .ncite{background:#fff;border-color:#cbd4e3}
+:root[data-theme="light"] #mcover{background:#e6eaf2}
+:root[data-theme="light"] .mbar i{background:rgba(20,30,60,.45)}
+:root[data-theme="light"] .res .seg b{color:#fff}
+:root[data-theme="light"] .res .seg b.save{color:#05301f}
+:root[data-theme="light"] .legend .neg b{color:#c8243b}
+:root[data-theme="light"] .rank .bar{background:#eef1f6}
+:root[data-theme="light"] .res td.n{color:#0b5fa8}
+:root[data-theme="light"] .steps li{background:#fff}
+:root[data-theme="light"] .steps li::before{background:#dbe2ef;color:#1b2333}
+:root[data-theme="light"] .steps li.done::before{background:#1baf7a;color:#fff}
+:root[data-theme="light"] .steps li.now{background:rgba(11,114,201,.06);border-color:rgba(11,114,201,.45);box-shadow:0 0 18px rgba(11,114,201,.12)}
+:root[data-theme="light"] .steps li.now::before{color:#fff}
+:root[data-theme="light"] .tt{background:#fff;color:#111a2e;box-shadow:0 8px 24px rgba(20,30,60,.15)}
+:root[data-theme="light"] .tools a:hover{box-shadow:0 14px 34px rgba(20,30,60,.12),0 0 0 1px rgba(11,114,201,.25)}
+:root[data-theme="light"] .news-box{background:linear-gradient(160deg,rgba(255,170,60,.10),rgba(106,85,224,.06) 60%,#fff);border-color:rgba(225,145,40,.38);box-shadow:0 10px 30px rgba(20,30,60,.08)}
+:root[data-theme="light"] .ni{background:#fff}
+:root[data-theme="light"] .ni:hover{box-shadow:0 6px 20px rgba(20,30,60,.10)}
+:root[data-theme="light"] .nmedia{color:#a85a00}
+:root[data-theme="light"] .nb-all{color:#9a5200}
+:root[data-theme="light"] .nt:hover{color:#a85a00}
+:root[data-theme="light"] .chip:hover{color:var(--fg)}
+:root[data-theme="light"] article p{color:#2c3549}
+:root[data-theme="light"] .check input{accent-color:#0b72c9}
+:root[data-theme="light"] .theme-btn:hover{box-shadow:0 0 12px rgba(11,114,201,.2)}
+
 /* 列印報表（白底，只在列印時出現） */
 #report{display:none}
 @media print{

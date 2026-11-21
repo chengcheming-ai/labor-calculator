@@ -1,5 +1,15 @@
 const $=id=>document.getElementById(id);
 
+/* 深色／淺色主題切換（預設深色；選擇只記在使用者自己的瀏覽器） */
+(()=>{
+  const h=document.querySelector('header .in');if(!h)return;
+  const root=document.documentElement,meta=document.querySelector('meta[name="theme-color"]'),b=document.createElement('button');
+  b.type='button';b.className='theme-btn';
+  const sync=()=>{const L=root.dataset.theme==='light';b.textContent=L?'🌙 深色':'☀️ 淺色';b.setAttribute('aria-label',L?'切換為深色主題':'切換為淺色主題');if(meta)meta.content=L?'#f4f6fb':'#070b18'};
+  b.onclick=()=>{const L=root.dataset.theme!=='light';if(L)root.dataset.theme='light';else delete root.dataset.theme;try{localStorage.setItem('lc-theme',L?'light':'dark')}catch(e){}sync()};
+  h.appendChild(b);sync();
+})();
+
 /* 欄位上下限：超出時以上下限計算，輸入框亮橘框，並在結果區說明原因（data-why） */
 const _over=[];
 const _lab=id=>{const l=document.querySelector(`label[for="${id}"]`);if(!l)return id;
