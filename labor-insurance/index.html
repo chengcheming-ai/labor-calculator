@@ -1,0 +1,20 @@
+<!doctype html><html lang="zh-Hant-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>勞保老年年金計算機｜勞工權益計算機</title><meta name="description" content="勞保老年年金一個月領多少？輸入平均月投保薪資、年資與出生年，自動以兩種公式擇優計算，並比較提早、延後請領的差異。"><link rel="canonical" href="https://chengcheming-ai.github.io/labor-calculator/labor-insurance/">
+<meta property="og:title" content="勞保老年年金計算機｜勞工權益計算機"><meta property="og:description" content="勞保老年年金一個月領多少？輸入平均月投保薪資、年資與出生年，自動以兩種公式擇優計算，並比較提早、延後請領的差異。"><meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚖️</text></svg>"><link rel="stylesheet" href="../style.css"></head><body>
+<header><div class="in"><a class="logo" href="../">⚖️ 勞工權益計算機</a><nav><a href="../overtime/">加班費</a><a href="../annual-leave/">特休天數</a><a href="../severance/">資遣費</a><a href="../pension/">勞退自提</a><a href="../labor-insurance/" class=on>勞保年金</a></nav></div></header>
+<main>
+<h1>勞保老年年金計算機</h1><p class="lead">依《勞工保險條例》第58條、第58條之1計算。</p>
+<div class="card"><div class="grid"><div><label for="s">平均月投保薪資（元，上限45,800）</label><input id="s" type="number" value="45800" ></div><div><label for="y">投保年資（年，可含小數）</label><input id="y" type="number" value="30" step=0.1></div><div><label for="by">出生年（西元）</label><input id="by" type="number" value="1975" ></div><div><label for="ca">預計請領年齡</label><input id="ca" type="number" value="65" ></div></div>
+<div class="res"><p id="legal"></p>每月可領 <div class="big" id="m">-</div><table id="tb"></table></div></div>
+<article><h2>兩種計算公式（擇優發給）</h2><p><b>A 式：</b>平均月投保薪資 × 年資 × 0.775% ＋ 3,000 元</p><p><b>B 式：</b>平均月投保薪資 × 年資 × 1.55%</p>
+<p>年資較短、薪資較低的人通常 A 式較高；年資長的人 B 式較高。平均月投保薪資取加保期間最高的 60 個月平均。</p>
+<h2>法定請領年齡</h2><table><tr><th>出生年</th><th>法定請領年齡</th></tr><tr><td>1957 年（民國46年）以前</td><td>60 歲</td></tr><tr><td>1958 年</td><td>61 歲</td></tr><tr><td>1959 年</td><td>62 歲</td></tr><tr><td>1960 年</td><td>63 歲</td></tr><tr><td>1961 年</td><td>64 歲</td></tr><tr><td>1962 年（民國51年）以後</td><td>65 歲</td></tr></table>
+<p><b>提早請領：</b>最多提早 5 年，每提早 1 年減給 4%。<b>延後請領：</b>最多延後 5 年，每延後 1 年增給 4%。</p>
+<h2>常見問題</h2><p><b>Q：年資不到 15 年怎麼辦？</b><br>年資未滿 15 年不能領年金，只能請領「老年一次金」：平均月投保薪資 × 年資基數（每滿 1 年 1 個基數，未滿 1 年按比例）。</p></article></main>
+<footer><div class="in">本站試算結果僅供參考，實際金額以勞動部、勞保局公告及雇主核定為準。　<a href="../about/">關於本站</a>　<a href="../privacy/">隱私權政策</a><br>© 2026 勞工權益計算機</div></footer>
+<script src="../common.js"></script><script>bind(()=>{const s=Math.min(Math.max(num('s'),0),45800),y=num('y'),b=num('by');const L=b<=1957?60:b>=1962?65:b-1897;
+let ca=Math.min(Math.max(num('ca'),L-5),L+5);$('legal').textContent=`法定請領年齡 ${L} 歲；以 ${ca} 歲請領計算`;
+if(y<15){$('m').textContent='不符年金資格';$('tb').innerHTML=`<tr><td>老年一次金（約）</td><td class=n>${fmt(s*y)} 元</td></tr>`;return}
+const A=s*y*0.00775+3000,B=s*y*0.0155,base=Math.max(A,B),adj=(ca-L)*0.04,m=base*(1+adj);
+$('m').textContent=fmt(m)+' 元';$('tb').innerHTML=`<tr><td>A 式</td><td class=n>${fmt(A)} 元</td></tr><tr><td>B 式</td><td class=n>${fmt(B)} 元</td></tr><tr><td>${adj<0?'提早請領減給':adj>0?'延後請領增給':'於法定年齡請領'}</td><td class=n>${(adj*100).toFixed(0)}%</td></tr><tr><td>一年合計</td><td class=n>${fmt(m*12)} 元</td></tr>`})</script></body></html>
