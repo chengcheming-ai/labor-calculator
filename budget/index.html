@@ -20,6 +20,7 @@
 <div class="card"><h2 style="margin-top:0">🧭 建議的理財方向</h2><ol class="steps" id="steps"></ol>
 <p class="note">以上是一般性理財觀念，依你輸入的數字排出優先順序，不構成任何投資建議；投資有風險，請依自身狀況評估。</p></div>
 <div id="tt" class="tt" hidden></div>
+<section class="news" id="news" data-k="budget"></section>
 <article><h2>什麼是 50／30／20 法則？</h2>
 <p>把每月收入分成三份：<b>50% 用在必要開銷</b>（房租、伙食、交通、保險等），<b>30% 用在想要的開銷</b>（娛樂、購物、旅遊），<b>至少 20% 存下來</b>。這是最常見的入門理財比例，可以依自己的生活調整，但儲蓄率越高，離財務自由越近。</p>
 <h2>緊急預備金要存多少？</h2><p>一般建議存下 <b>6 個月的必要開銷</b>，放在隨時領得出來的活存或定存，用來應付失業、生病等突發狀況。存滿之後，再把多餘的錢拿去做長期投資。</p>
@@ -28,7 +29,7 @@
 <p><b>Q：保險費要繳多少？</b><br>常見的參考是不超過收入的 10%，先求醫療、意外、失能等基本保障，再考慮其他。</p>
 <p><b>Q：存不到錢怎麼辦？</b><br>先記帳一個月找出錢的去向，從「想要」類開銷開始砍；也可以用「先存再花」的方式，發薪日一到就自動轉帳到儲蓄帳戶。</p></article></main>
 <footer><div class="in">本站試算結果僅供參考，實際金額以勞動部、勞保局公告及雇主核定為準。　<a href="../about/">關於本站</a>　<a href="../privacy/">隱私權政策</a><br>© 2026 勞工權益計算機</div></footer>
-<script src="../common.js"></script><script>const NEED=[['rent','居住'],['food','伙食'],['trans','交通'],['bill','水電通訊'],['ins','保險'],['fam','孝親費'],['edu','子女教育'],['debt','貸款卡費']],WANT=[['fun','娛樂購物'],['misc','其他雜支']];
+<script src="../news.js"></script><script src="../common.js"></script><script>const NEED=[['rent','居住'],['food','伙食'],['trans','交通'],['bill','水電通訊'],['ins','保險'],['fam','孝親費'],['edu','子女教育'],['debt','貸款卡費']],WANT=[['fun','娛樂購物'],['misc','其他雜支']];
 const pc=x=>x===0?'0%':(x*100).toFixed(x>=0.1||x<=-0.1?0:1)+'%';
 const tt=$('tt');
 document.addEventListener('pointermove',e=>{const t=e.target.closest('[data-tip]');if(!t){tt.hidden=true;return}tt.hidden=false;tt.textContent=t.dataset.tip;

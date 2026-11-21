@@ -7,13 +7,14 @@
 <h1>勞保老年年金計算機</h1><p class="lead">依《勞工保險條例》第58條、第58條之1計算。</p>
 <div class="card"><div class="grid"><div><label for="s">平均月投保薪資（元，上限45,800）</label><input id="s" min="0" max="45800" data-why="勞保最高月投保薪資為 45,800 元" type="number" value="45800" ></div><div><label for="y">投保年資（年，可含小數）</label><input id="y" min="0" max="55" data-why="投保年資最多以 55 年計算（15 歲投保到 70 歲）" data-show="最多 55 年" type="number" value="30" step=0.1></div><div><label for="by">出生年（西元）</label><input id="by" min="1930" max="2011" data-why="出生年需介於 1930～2011 年（年滿 15 歲才能投保）" type="number" value="1975" ></div><div><label for="ca">預計請領年齡</label><input id="ca" data-why="勞保老年年金只能在法定請領年齡的前後 5 年內請領" data-show="法定年齡 ±5 歲" type="number" value="65" ></div></div>
 <div class="res"><p id="legal"></p>每月可領 <div class="big" id="m">-</div><table id="tb"></table></div></div>
+<section class="news" id="news" data-k="labor-insurance"></section>
 <article><h2>兩種計算公式（擇優發給）</h2><p><b>A 式：</b>平均月投保薪資 × 年資 × 0.775% ＋ 3,000 元</p><p><b>B 式：</b>平均月投保薪資 × 年資 × 1.55%</p>
 <p>年資較短、薪資較低的人通常 A 式較高；年資長的人 B 式較高。平均月投保薪資取加保期間最高的 60 個月平均。</p>
 <h2>法定請領年齡</h2><table><tr><th>出生年</th><th>法定請領年齡</th></tr><tr><td>1957 年（民國46年）以前</td><td>60 歲</td></tr><tr><td>1958 年</td><td>61 歲</td></tr><tr><td>1959 年</td><td>62 歲</td></tr><tr><td>1960 年</td><td>63 歲</td></tr><tr><td>1961 年</td><td>64 歲</td></tr><tr><td>1962 年（民國51年）以後</td><td>65 歲</td></tr></table>
 <p><b>提早請領：</b>最多提早 5 年，每提早 1 年減給 4%。<b>延後請領：</b>最多延後 5 年，每延後 1 年增給 4%。</p>
 <h2>常見問題</h2><p><b>Q：年資不到 15 年怎麼辦？</b><br>年資未滿 15 年不能領年金，只能請領「老年一次金」：平均月投保薪資 × 年資基數（每滿 1 年 1 個基數，未滿 1 年按比例）。</p></article></main>
 <footer><div class="in">本站試算結果僅供參考，實際金額以勞動部、勞保局公告及雇主核定為準。　<a href="../about/">關於本站</a>　<a href="../privacy/">隱私權政策</a><br>© 2026 勞工權益計算機</div></footer>
-<script src="../common.js"></script><script>bind(()=>{const s=num('s'),y=num('y'),b=num('by'),L=b<=1957?60:b>=1962?65:b-1897;$('ca').min=L-5;$('ca').max=L+5;const ca=num('ca'),T=[];
+<script src="../news.js"></script><script src="../common.js"></script><script>bind(()=>{const s=num('s'),y=num('y'),b=num('by'),L=b<=1957?60:b>=1962?65:b-1897;$('ca').min=L-5;$('ca').max=L+5;const ca=num('ca'),T=[];
 $('legal').textContent=`法定請領年齡 ${L} 歲；以 ${ca} 歲請領計算`;
 if(y<15){$('m').textContent='不符年金資格';$('tb').innerHTML=`<tr><td>老年一次金（約）</td><td class=n>${fmt(s*y)} 元</td></tr>`;
  T.push(['y','warn',`再投保 ${r1(15-y)} 年，就能從一次金升級成「按月領到老」的年金 🔓`]);return tips(T)}

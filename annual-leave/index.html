@@ -7,6 +7,7 @@
 <h1>特休天數計算機</h1><p class="lead">依《勞動基準法》第38條（週年制）計算。</p>
 <div class="card"><div class="grid"><div><label for="st">到職日</label><input id="st" min="1950-01-01" max="2100-12-31" type="date" value="2022-03-01" ></div><div><label for="dt">計算日（預設今天）</label><input id="dt" min="1950-01-01" max="2100-12-31" data-nosave type="date" value="" ></div><div><label for="sal">月薪（選填，算未休工資）</label><input id="sal" min="0" max="1000000" data-why="月薪請輸入 0～100 萬元之間的金額" type="number" value="36000" ></div><div><label for="left">未休特休天數（選填）</label><input id="left" min="0" data-why="未休特休最多是「今年特休」加上「去年遞延」的天數" type="number" value="0" ></div></div>
 <div class="res">目前年資 <b id="yr">-</b>，本年度特休 <div class="big" id="days">-</div><p id="pay"></p><table id="tb"></table></div></div>
+<section class="news" id="news" data-k="annual-leave"></section>
 <article><h2>特休天數對照表</h2><table><tr><th>年資</th><th>特休天數</th></tr>
 <tr><td>滿 6 個月，未滿 1 年</td><td>3 日</td></tr><tr><td>滿 1 年，未滿 2 年</td><td>7 日</td></tr><tr><td>滿 2 年，未滿 3 年</td><td>10 日</td></tr>
 <tr><td>滿 3 年，未滿 5 年</td><td>每年 14 日</td></tr><tr><td>滿 5 年，未滿 10 年</td><td>每年 15 日</td></tr><tr><td>滿 10 年以上</td><td>每 1 年加 1 日，最多 30 日</td></tr></table>
@@ -15,7 +16,7 @@
 <p><b>Q：公司用「曆年制」計算，天數會不同嗎？</b><br>公司可採曆年制、會計年度制等方式，但換算結果不得少於週年制的天數。本計算機以週年制計算。</p>
 <p><b>Q：特休日期由誰決定？</b><br>由勞工排定，雇主若因企業經營上急迫需求，可與勞工協商調整。</p></article></main>
 <footer><div class="in">本站試算結果僅供參考，實際金額以勞動部、勞保局公告及雇主核定為準。　<a href="../about/">關於本站</a>　<a href="../privacy/">隱私權政策</a><br>© 2026 勞工權益計算機</div></footer>
-<script src="../common.js"></script><script>function days(y){if(y<0.5)return 0;if(y<1)return 3;if(y<2)return 7;if(y<3)return 10;if(y<5)return 14;if(y<10)return 15;return Math.min(30,15+Math.floor(y)-9)}
+<script src="../news.js"></script><script src="../common.js"></script><script>function days(y){if(y<0.5)return 0;if(y<1)return 3;if(y<2)return 7;if(y<3)return 10;if(y<5)return 14;if(y<10)return 15;return Math.min(30,15+Math.floor(y)-9)}
 function addM(d,m){const r=new Date(d);r.setMonth(r.getMonth()+m);return r}
 const dd=(a,b)=>Math.ceil((b-a)/864e5);
 const ms=[6,12,24,36,48,60,72,84,96,108,120,132,144,156,168,180,192,204,216,228,240,252,264,276,288];

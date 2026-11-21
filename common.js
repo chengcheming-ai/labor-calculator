@@ -49,6 +49,16 @@ document.querySelectorAll('.res').forEach(res=>{
   a.querySelector('.b-reset').onclick=()=>{try{localStorage.removeItem(KEY)}catch(_){}location.reload()};
 });
 
+/* 延伸閱讀：讀取 news.js，只顯示半年內的文章，新的排前面 */
+(()=>{
+  const s=$('news');if(!s||!window.NEWS)return;
+  const esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const L=(NEWS.items[s.dataset.k]||[]).filter(x=>(Date.now()-new Date(x.d))/864e5<=186&&/^https:\/\//.test(x.u)).sort((a,b)=>b.d.localeCompare(a.d)).slice(0,5);
+  if(!L.length){s.remove();return}
+  s.innerHTML=`<h2>📰 延伸閱讀</h2><p class="note">精選天下、經理人、商周、遠見、今周刊等媒體近半年的相關報導・更新於 ${esc(NEWS.updated)}</p><div class="nl">`+
+    L.map(x=>`<a class="ni" href="${esc(x.u)}" target="_blank" rel="noopener noreferrer"><span class="nmeta"><b>${esc(x.m)}</b>${esc(x.d.replace(/-/g,'/'))}</span><span class="nt">${esc(x.t)}</span><span class="ar" aria-hidden="true">↗</span></a>`).join('')+'</div>';
+})();
+
 /* 列印報表：列印前（按鈕或 Ctrl+P）即時組出白底報表，列印時只印報表 */
 function buildReport(){
   const res=document.querySelector('.res');if(!res)return;

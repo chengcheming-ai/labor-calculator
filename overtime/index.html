@@ -9,6 +9,7 @@
 <div><label for="rd">休息日加班：每次幾小時</label><input id="rd" min="0" max="12" data-why="休息日出勤一天最多 12 小時" data-show="最多 12 小時" type="number" value="8" step=0.5></div><div><label for="rdn">休息日加班：次數</label><input id="rdn" min="0" max="5" data-why="一個月最多只有 5 個休息日" data-show="最多 5 次" type="number" value="1" ></div>
 <div><label for="hd">國定假日出勤：每次幾小時</label><input id="hd" min="0" max="12" data-why="一天總工時最多 12 小時" data-show="最多 12 小時" type="number" value="8" step=0.5></div><div><label for="hdn">國定假日出勤：次數</label><input id="hdn" min="0" max="6" data-why="單月國定假日最多約 6 天（例如春節所在月份）" data-show="最多 6 次" type="number" value="0" ></div></div>
 <div class="res">本月加班費合計 <div class="big" id="tot">-</div><div class="meter"><div class="mhead"><span>😴 疲勞儀表</span><b id="mval"></b></div><div class="mbar"><div id="mcover"></div><i style="left:46%" data-l="46h 法定上限"></i><i style="left:80%" data-l="80h 過勞線"></i></div></div><table id="tb"></table><p class="note" id="hr"></p></div></div>
+<section class="news" id="news" data-k="overtime"></section>
 <article><h2>加班費怎麼算？</h2>
 <p>月薪制勞工的時薪＝月薪 ÷ 30 ÷ 8。例如月薪 36,000 元，時薪就是 150 元。</p>
 <table><tr><th>加班類型</th><th>時段</th><th>倍率</th></tr>
@@ -21,7 +22,7 @@
 <p><b>Q：例假日（通常是週日）可以叫員工上班嗎？</b><br>原則上不行，只有天災、事變或突發事件才可以，且須加倍發給工資並給予補假休息。</p>
 <p><b>Q：加班可以換補休嗎？</b><br>可以，但須由勞工本人同意，並依工作時數 1:1 換算補休；補休期限屆滿未休完，雇主必須發給加班費。</p></article></main>
 <footer><div class="in">本站試算結果僅供參考，實際金額以勞動部、勞保局公告及雇主核定為準。　<a href="../about/">關於本站</a>　<a href="../privacy/">隱私權政策</a><br>© 2026 勞工權益計算機</div></footer>
-<script src="../common.js"></script><script>function wd(h){h=Math.min(h,4);return Math.min(h,2)*4/3+Math.max(Math.min(h-2,2),0)*5/3}
+<script src="../news.js"></script><script src="../common.js"></script><script>function wd(h){h=Math.min(h,4);return Math.min(h,2)*4/3+Math.max(Math.min(h-2,2),0)*5/3}
 function rd(h){h=Math.min(h,12);return Math.min(h,2)*4/3+Math.max(Math.min(h-2,6),0)*5/3+Math.max(Math.min(h-8,4),0)*8/3}
 function hd(h){if(h<=0)return 0;h=Math.min(h,12);return 8+Math.max(Math.min(h-8,2),0)*4/3+Math.max(Math.min(h-10,2),0)*5/3}
 bind(()=>{const hr=num('sal')/240,W=num('wd'),Wn=num('wdn'),R=num('rd'),Rn=num('rdn'),H=num('hd'),Hn=num('hdn');

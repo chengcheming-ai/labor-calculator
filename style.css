@@ -130,6 +130,18 @@ h3.grp:first-child{margin-top:0}
 .tt{position:fixed;z-index:50;pointer-events:none;padding:6px 10px;border-radius:8px;background:#0e1530;border:1px solid var(--in-b);color:#fff;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.4);white-space:nowrap}
 @media (max-width:480px){.rank .row{grid-template-columns:4.8em 1fr 3em 4.8em;gap:6px;font-size:13px}}
 
+/* 延伸閱讀 */
+.news{margin:6px 0 26px}
+.news h2{margin-top:8px}
+.news .note{margin:-4px 0 12px}
+.nl{display:grid;gap:10px}
+.ni{display:grid;grid-template-columns:1fr auto;grid-template-areas:"meta ar" "t ar";gap:4px 14px;align-items:center;padding:14px 16px;border-radius:12px;text-decoration:none;color:var(--fg);background:var(--card);border:1px solid var(--card-b);transition:transform .2s,border-color .2s,box-shadow .2s}
+.ni:hover{transform:translateY(-2px);border-color:rgba(76,201,240,.5);box-shadow:0 10px 30px rgba(0,0,0,.4),0 0 18px rgba(76,201,240,.15)}
+.nmeta{grid-area:meta;font-size:12.5px;color:var(--dim);display:flex;gap:10px;align-items:center}
+.nmeta b{color:#ffd08a;font-weight:600;padding:1px 8px;border-radius:999px;background:rgba(255,179,71,.12);border:1px solid rgba(255,179,71,.28)}
+.nt{grid-area:t;font-size:15.5px;line-height:1.55;color:#eef2fb}
+.ar{grid-area:ar;color:var(--acc);font-size:18px}
+
 /* 列印報表（白底，只在列印時出現） */
 #report{display:none}
 @media print{
