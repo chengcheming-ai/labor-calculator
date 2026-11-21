@@ -58,6 +58,38 @@ select option{background:#0e1530;color:#fff}
 @keyframes pop{0%{transform:scale(.96);filter:drop-shadow(0 0 28px rgba(126,224,255,.95))}60%{transform:scale(1.03)}100%{transform:scale(1);filter:drop-shadow(0 0 14px rgba(76,201,240,.45))}}
 @media (prefers-reduced-motion:reduce){.big.pop{animation:none}}
 
+/* 提示條 */
+.tips{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.tips:empty{display:none}
+.tip{padding:12px 14px;border-radius:10px;color:#eef2fb;font-size:15px;line-height:1.65;border:1px solid;border-left-width:4px;animation:tipIn .4s ease-out}
+.tip.flash{animation:tipIn .4s ease-out}
+.tip.ok{background:rgba(60,220,140,.10);border-color:rgba(60,220,140,.5);box-shadow:0 0 18px rgba(60,220,140,.12)}
+.tip.info{background:rgba(76,201,240,.08);border-color:rgba(76,201,240,.4)}
+.tip.warn{background:rgba(255,214,80,.10);border-color:rgba(255,214,80,.55);box-shadow:0 0 18px rgba(255,214,80,.12)}
+.tip.alert{background:rgba(255,150,60,.12);border-color:rgba(255,150,60,.65);box-shadow:0 0 20px rgba(255,150,60,.18)}
+.tip.danger{background:rgba(255,80,100,.14);border-color:rgba(255,80,100,.75);box-shadow:0 0 24px rgba(255,80,100,.28);animation:tipIn .4s ease-out,beat 2.4s ease-in-out .4s infinite}
+@keyframes tipIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes beat{50%{box-shadow:0 0 36px rgba(255,80,100,.55)}}
+@media (prefers-reduced-motion:reduce){.tip,.tip.flash,.tip.danger{animation:none}}
+
+/* 複製／清除按鈕 */
+.act{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.act button{font:inherit;font-size:14px;padding:8px 16px;border-radius:999px;border:1px solid rgba(124,170,255,.35);background:rgba(255,255,255,.05);color:var(--fg);cursor:pointer;transition:border-color .2s,box-shadow .2s}
+.act button:hover{border-color:var(--acc);box-shadow:0 0 14px rgba(76,201,240,.3)}
+
+/* 疲勞儀表 */
+.meter{margin:6px 0 16px;padding-bottom:20px}
+.mhead{display:flex;justify-content:space-between;font-size:14px;margin-bottom:8px;color:var(--mut)}
+.mbar{position:relative;height:12px;border-radius:999px;background:linear-gradient(90deg,#3ddc97 0%,#ffd650 46%,#ff9a3c 65%,#ff4d6d 85%)}
+#mcover{position:absolute;right:0;top:0;bottom:0;background:#141b36;border-radius:0 999px 999px 0;transition:width .5s ease}
+.mbar i{position:absolute;top:-4px;bottom:-4px;width:2px;background:rgba(255,255,255,.55)}
+.mbar i::after{content:attr(data-l);position:absolute;top:20px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--dim);white-space:nowrap;font-style:normal}
+
+/* 離職檢核清單 */
+.check label{display:flex;gap:10px;align-items:flex-start;font-size:15px;color:var(--fg);padding:9px 0;border-bottom:1px solid var(--line);cursor:pointer;margin:0}
+.check input{width:18px;height:18px;margin-top:4px;flex:none;accent-color:#4cc9f0;padding:0}
+.check input:checked+span{color:var(--dim);text-decoration:line-through}
+
 /* 表格 */
 table{width:100%;border-collapse:collapse;font-size:15px}
 th,td{border-bottom:1px solid var(--line);padding:9px 6px;text-align:left}

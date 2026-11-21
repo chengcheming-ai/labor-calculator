@@ -13,8 +13,15 @@
 <p><b>提早請領：</b>最多提早 5 年，每提早 1 年減給 4%。<b>延後請領：</b>最多延後 5 年，每延後 1 年增給 4%。</p>
 <h2>常見問題</h2><p><b>Q：年資不到 15 年怎麼辦？</b><br>年資未滿 15 年不能領年金，只能請領「老年一次金」：平均月投保薪資 × 年資基數（每滿 1 年 1 個基數，未滿 1 年按比例）。</p></article></main>
 <footer><div class="in">本站試算結果僅供參考，實際金額以勞動部、勞保局公告及雇主核定為準。　<a href="../about/">關於本站</a>　<a href="../privacy/">隱私權政策</a><br>© 2026 勞工權益計算機</div></footer>
-<script src="../common.js"></script><script>bind(()=>{const s=Math.min(Math.max(num('s'),0),45800),y=num('y'),b=num('by');const L=b<=1957?60:b>=1962?65:b-1897;
-let ca=Math.min(Math.max(num('ca'),L-5),L+5);$('legal').textContent=`法定請領年齡 ${L} 歲；以 ${ca} 歲請領計算`;
-if(y<15){$('m').textContent='不符年金資格';$('tb').innerHTML=`<tr><td>老年一次金（約）</td><td class=n>${fmt(s*y)} 元</td></tr>`;return}
+<script src="../common.js"></script><script>bind(()=>{const raw=num('s'),s=Math.min(Math.max(raw,0),45800),y=num('y'),b=num('by'),L=b<=1957?60:b>=1962?65:b-1897,want=num('ca'),ca=Math.min(Math.max(want,L-5),L+5),T=[];
+$('legal').textContent=`法定請領年齡 ${L} 歲；以 ${ca} 歲請領計算`;
+if(raw>45800)T.push(['cap','info','勞保投保薪資上限是 45,800 元，已自動用上限計算 👌']);
+if(want!==ca)T.push(['ca','info',`請領年齡只能在法定年齡 ${L} 歲的前後 5 年內，已自動調整成 ${ca} 歲`]);
+if(y<15){$('m').textContent='不符年金資格';$('tb').innerHTML=`<tr><td>老年一次金（約）</td><td class=n>${fmt(s*y)} 元</td></tr>`;
+ T.push(['y','warn',`再投保 ${r1(15-y)} 年，就能從一次金升級成「按月領到老」的年金 🔓`]);return tips(T)}
 const A=s*y*0.00775+3000,B=s*y*0.0155,base=Math.max(A,B),adj=(ca-L)*0.04,m=base*(1+adj);
-$('m').textContent=fmt(m)+' 元';$('tb').innerHTML=`<tr><td>A 式</td><td class=n>${fmt(A)} 元</td></tr><tr><td>B 式</td><td class=n>${fmt(B)} 元</td></tr><tr><td>${adj<0?'提早請領減給':adj>0?'延後請領增給':'於法定年齡請領'}</td><td class=n>${(adj*100).toFixed(0)}%</td></tr><tr><td>一年合計</td><td class=n>${fmt(m*12)} 元</td></tr>`})</script></body></html>
+$('m').textContent=fmt(m)+' 元';$('tb').innerHTML=`<tr><td>A 式</td><td class=n>${fmt(A)} 元</td></tr><tr><td>B 式</td><td class=n>${fmt(B)} 元</td></tr><tr><td>${adj<0?'提早請領減給':adj>0?'延後請領增給':'於法定年齡請領'}</td><td class=n>${(adj*100).toFixed(0)}%</td></tr><tr><td>一年合計</td><td class=n>${fmt(m*12)} 元</td></tr>`;
+if(ca<L){const be=(base*L-m*ca)/(base-m);T.push(['when','warn',`提早 ${L-ca} 年領，每月少領 ${fmt(base-m)} 元，而且是終身打折喔！損益兩平約在 ${Math.round(be)} 歲：預計活超過這個歲數，乖乖等到 ${L} 歲再領比較划算 🐢`])}
+else if(ca>L){const be=(m*ca-base*L)/(m-base);T.push(['when','info',`延後 ${ca-L} 年領，每月多領 ${fmt(m-base)} 元！不過要活過約 ${Math.round(be)} 歲才回本，對自己的健康有信心嗎？💪`])}
+if(y>=35)T.push(['vet','ok',`投保 ${r1(y)} 年，勞保界的資深老鳥 🦅 辛苦大半輩子了！`]);
+tips(T)})</script></body></html>

@@ -14,7 +14,17 @@
 <h2>誰適合自提？</h2><p>所得稅率 12% 以上、有長期存退休金需求的人最划算。稅率 5% 或免稅的人，節稅效果較小，可以視資金需求決定。</p>
 <h2>常見問題</h2><p><b>Q：自提可以隨時停止嗎？</b><br>可以，隨時向雇主申請調整或停止。</p><p><b>Q：月提繳工資跟實際薪資一樣嗎？</b><br>依勞動部「月提繳工資分級表」對應級距，最高 150,000 元，與實際薪資可能略有差異，本計算機以實際薪資估算。</p></article></main>
 <footer><div class="in">本站試算結果僅供參考，實際金額以勞動部、勞保局公告及雇主核定為準。　<a href="../about/">關於本站</a>　<a href="../privacy/">隱私權政策</a><br>© 2026 勞工權益計算機</div></footer>
-<script src="../common.js"></script><script>bind(()=>{const n=Math.max(0,(num('ret')-num('age'))*12),r=num('r')/100/12,g=num('g')/100,p=+$('pct').value/100;let A=num('cur'),B=num('cur'),own=0,s=num('sal');
-for(let i=0;i<n;i++){if(i>0&&i%12===0)s*=1+g;const w=Math.min(s,150000);A=A*(1+r)+w*(0.06+p);B=B*(1+r)+w*0.06;own+=w*p}
-const tx=Math.min(num('sal'),150000)*p*12*num('tax')/100;$('tot').textContent=fmt(A)+' 元';
-$('tb').innerHTML=`<tr><td>只有雇主提繳 6%</td><td class=n>${fmt(B)} 元</td></tr><tr><td>自提多累積</td><td class=n>${fmt(A-B)} 元</td></tr><tr><td>自提本金合計</td><td class=n>${fmt(own)} 元</td></tr><tr><td>今年自提可節稅（約）</td><td class=n>${fmt(tx)} 元</td></tr>`})</script></body></html>
+<script src="../common.js"></script><script>function sim(n,cur,sal,p,r,g){let A=cur,own=0,s=sal;for(let i=0;i<n;i++){if(i>0&&i%12===0)s*=1+g;const w=Math.min(s,150000);A=A*(1+r)+w*(0.06+p);own+=w*p}return[A,own]}
+bind(()=>{const age=num('age'),ret=num('ret'),n=Math.max(0,(ret-age)*12),r=num('r')/100/12,g=num('g')/100,p=+$('pct').value/100,sal=num('sal'),cur=num('cur'),tax=+$('tax').value;
+const[A,own]=sim(n,cur,sal,p,r,g),[B]=sim(n,cur,sal,0,r,g),tx=Math.min(sal,150000)*p*12*tax/100;
+$('tot').textContent=fmt(A)+' 元';
+$('tb').innerHTML=`<tr><td>只有雇主提繳 6%</td><td class=n>${fmt(B)} 元</td></tr><tr><td>自提多累積</td><td class=n>${fmt(A-B)} 元</td></tr><tr><td>自提本金合計</td><td class=n>${fmt(own)} 元</td></tr><tr><td>今年自提可節稅（約）</td><td class=n>${fmt(tx)} 元</td></tr>`;
+const T=[];
+if(p===0&&tax>=12)T.push(['nudge','info',`💡 改成自提 6%，今年大約可以少繳 ${fmt(Math.min(sal,150000)*0.06*12*tax/100)} 元的稅，等於政府幫你出錢存退休金 💰`]);
+if(p>0&&tax===5)T.push(['low','info','稅率 5% 的節稅效果比較小，手頭緊的話自提比例可以彈性調整，隨時都能改 👌']);
+if(ret<60)T.push(['ret','warn','勞退要滿 60 歲才能領喔，想更早退休得靠自己另外存 🏃']);
+if(num('r')>6)T.push(['r','warn',`年報酬 ${num('r')}%？巴菲特看了都想跟你請教 😏 勞退基金長期平均大約 3～5%`]);
+if(age<30&&n>60){const[C]=sim(n-60,cur,sal,p,r,g);T.push(['young','info',`比晚 5 年才開始，現在起步可以多累積約 ${fmt(A-C)} 元，複利就是年輕人的超能力 ⚡`])}
+if(A>=5e6)T.push(['m','ok','🎉 突破 500 萬！退休後可以天天睡到自然醒 😎']);else if(A>=1e6)T.push(['m','ok','🎉 突破百萬大關！未來的你會感謝現在的你 🙏']);
+celebrate('m1',A>=1e6);celebrate('m5',A>=5e6);
+tips(T)})</script></body></html>

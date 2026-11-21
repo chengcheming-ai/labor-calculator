@@ -5,7 +5,7 @@
 <header><div class="in"><a class="logo" href="../"><img src="../icon.svg" alt="" width="28" height="28" style="vertical-align:-7px;margin-right:6px">勞工權益計算機</a><nav><a href="../overtime/">加班費</a><a href="../annual-leave/" class=on>特休天數</a><a href="../severance/">資遣費</a><a href="../pension/">勞退自提</a><a href="../labor-insurance/">勞保年金</a></nav></div></header>
 <main>
 <h1>特休天數計算機</h1><p class="lead">依《勞動基準法》第38條（週年制）計算。</p>
-<div class="card"><div class="grid"><div><label for="st">到職日</label><input id="st" type="date" value="2022-03-01" ></div><div><label for="dt">計算日（預設今天）</label><input id="dt" type="date" value="" ></div><div><label for="sal">月薪（選填，算未休工資）</label><input id="sal" type="number" value="36000" ></div><div><label for="left">未休特休天數（選填）</label><input id="left" type="number" value="0" ></div></div>
+<div class="card"><div class="grid"><div><label for="st">到職日</label><input id="st" type="date" value="2022-03-01" ></div><div><label for="dt">計算日（預設今天）</label><input id="dt" data-nosave type="date" value="" ></div><div><label for="sal">月薪（選填，算未休工資）</label><input id="sal" type="number" value="36000" ></div><div><label for="left">未休特休天數（選填）</label><input id="left" type="number" value="0" ></div></div>
 <div class="res">目前年資 <b id="yr">-</b>，本年度特休 <div class="big" id="days">-</div><p id="pay"></p><table id="tb"></table></div></div>
 <article><h2>特休天數對照表</h2><table><tr><th>年資</th><th>特休天數</th></tr>
 <tr><td>滿 6 個月，未滿 1 年</td><td>3 日</td></tr><tr><td>滿 1 年，未滿 2 年</td><td>7 日</td></tr><tr><td>滿 2 年，未滿 3 年</td><td>10 日</td></tr>
@@ -17,11 +17,25 @@
 <footer><div class="in">本站試算結果僅供參考，實際金額以勞動部、勞保局公告及雇主核定為準。　<a href="../about/">關於本站</a>　<a href="../privacy/">隱私權政策</a><br>© 2026 勞工權益計算機</div></footer>
 <script src="../common.js"></script><script>function days(y){if(y<0.5)return 0;if(y<1)return 3;if(y<2)return 7;if(y<3)return 10;if(y<5)return 14;if(y<10)return 15;return Math.min(30,15+Math.floor(y)-9)}
 function addM(d,m){const r=new Date(d);r.setMonth(r.getMonth()+m);return r}
+const dd=(a,b)=>Math.ceil((b-a)/864e5);
+const ms=[6,12,24,36,48,60,72,84,96,108,120,132,144,156,168,180,192,204,216,228,240,252,264,276,288];
 if(!$('dt').value)$('dt').valueAsDate=new Date();
 bind(()=>{const s=new Date($('st').value),t=new Date($('dt').value);if(isNaN(s)||isNaN(t))return;
-let m=(t.getFullYear()-s.getFullYear())*12+t.getMonth()-s.getMonth();if(t.getDate()<s.getDate())m--;const y=m/12;
-$('yr').textContent=m<0?'尚未到職':Math.floor(m/12)+' 年 '+(m%12)+' 個月';$('days').textContent=days(y)+' 天';
+let m=(t.getFullYear()-s.getFullYear())*12+t.getMonth()-s.getMonth();if(t.getDate()<s.getDate())m--;const y=m/12,cur=days(y),T=[];
+if(m<0){$('yr').textContent='尚未到職';$('days').textContent='0 天';$('pay').textContent='';$('tb').innerHTML='';
+ tips([['neg','alert','到職日比計算日還晚？穿越時空的員工你好 👽 請檢查一下日期']]);return}
+$('yr').textContent=Math.floor(m/12)+' 年 '+(m%12)+' 個月';$('days').textContent=cur+' 天';
 $('pay').textContent=num('left')>0?'未休 '+num('left')+' 天可折算工資：'+fmt(num('sal')/30*num('left'))+' 元':'';
-let rows='<tr><th>日期</th><th>年資</th><th>當年度特休</th></tr>',ms=[6,12,24,36,48,60,72,84,96,108,120,132,144,156,168,180,192,204,216,228,240,252,264,276,288];let c=0;
-for(const k of ms){if(k<=m)continue;const d=addM(s,k);rows+=`<tr><td>${d.toLocaleDateString('zh-TW')}</td><td>${k<12?'6 個月':k/12+' 年'}</td><td>${days(k/12)} 天</td></tr>`;if(++c>=6)break}
-$('tb').innerHTML='<caption class=note style="text-align:left">接下來的特休變化</caption>'+rows})</script></body></html>
+let rows='<tr><th>日期</th><th>年資</th><th>當年度特休</th></tr>',c=0,nx=null;
+for(const k of ms){if(k<=m)continue;if(nx===null&&days(k/12)>cur)nx=k;const d=addM(s,k);rows+=`<tr><td>${d.toLocaleDateString('zh-TW')}</td><td>${k<12?'6 個月':k/12+' 年'}</td><td>${days(k/12)} 天</td></tr>`;if(++c>=6)break}
+$('tb').innerHTML='<caption class=note style="text-align:left">接下來的特休變化</caption>'+rows;
+if(m<6)T.push(['next','info',`再 ${dd(t,addM(s,6))} 天就解鎖人生第一筆 3 天特休 🔓 撐住！`]);
+else if(nx!==null){const n=dd(t,addM(s,nx));if(n<=30)T.push(['next','ok',`🎉 再 ${n} 天，特休就從 ${cur} 天升級成 ${days(nx/12)} 天！`])}
+const anniv=m>=12&&m%12===0&&t.getDate()===s.getDate();
+if(anniv)T.push(['anniv','ok',`🎂 今天到職滿 ${m/12} 年！給自己一個掌聲 👏`]);
+celebrate('anniv',anniv,true);
+if(cur>=20)T.push(['senior','info',`特休 ${cur} 天，資深前輩請收下我的膝蓋 🙇`]);
+const L=num('left');
+if(L>=5)T.push(['left','warn',`還有 ${L} 天特休沒休！不休白不休，揪團出去玩吧 ✈️（年度結束沒休完，可以折現約 ${fmt(num('sal')/30*L)} 元）`]);
+else if(L>0)T.push(['left','info',`還剩 ${L} 天特休，記得排進行事曆 😉`]);
+tips(T)})</script></body></html>

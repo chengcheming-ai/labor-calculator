@@ -8,7 +8,7 @@
 <div class="card"><div class="grid"><div><label for="sal">月薪（元）</label><input id="sal" type="number" value="36000" ></div><div><label for="wd">平日加班：每次幾小時</label><input id="wd" type="number" value="2" min=0 max=4 step=0.5></div><div><label for="wdn">平日加班：次數</label><input id="wdn" type="number" value="5" ></div>
 <div><label for="rd">休息日加班：每次幾小時</label><input id="rd" type="number" value="8" min=0 max=12 step=0.5></div><div><label for="rdn">休息日加班：次數</label><input id="rdn" type="number" value="1" ></div>
 <div><label for="hd">國定假日出勤：每次幾小時</label><input id="hd" type="number" value="8" min=0 max=12 step=0.5></div><div><label for="hdn">國定假日出勤：次數</label><input id="hdn" type="number" value="0" ></div></div>
-<div class="res">本月加班費合計 <div class="big" id="tot">-</div><table id="tb"></table><p class="note" id="hr"></p></div></div>
+<div class="res">本月加班費合計 <div class="big" id="tot">-</div><div class="meter"><div class="mhead"><span>😴 疲勞儀表</span><b id="mval"></b></div><div class="mbar"><div id="mcover"></div><i style="left:46%" data-l="46h 法定上限"></i><i style="left:80%" data-l="80h 過勞線"></i></div></div><table id="tb"></table><p class="note" id="hr"></p></div></div>
 <article><h2>加班費怎麼算？</h2>
 <p>月薪制勞工的時薪＝月薪 ÷ 30 ÷ 8。例如月薪 36,000 元，時薪就是 150 元。</p>
 <table><tr><th>加班類型</th><th>時段</th><th>倍率</th></tr>
@@ -24,6 +24,22 @@
 <script src="../common.js"></script><script>function wd(h){h=Math.min(h,4);return Math.min(h,2)*4/3+Math.max(Math.min(h-2,2),0)*5/3}
 function rd(h){h=Math.min(h,12);return Math.min(h,2)*4/3+Math.max(Math.min(h-2,6),0)*5/3+Math.max(Math.min(h-8,4),0)*8/3}
 function hd(h){if(h<=0)return 0;h=Math.min(h,12);return 8+Math.max(Math.min(h-8,2),0)*4/3+Math.max(Math.min(h-10,2),0)*5/3}
-bind(()=>{const hr=num('sal')/240,a=wd(num('wd'))*hr*num('wdn'),b=rd(num('rd'))*hr*num('rdn'),c=hd(num('hd'))*hr*num('hdn');
-$('tot').textContent=fmt(a+b+c)+' 元';$('hr').textContent='時薪 = '+fmt(num('sal'))+' ÷ 240 = '+hr.toFixed(1)+' 元';
-$('tb').innerHTML=`<tr><td>平日加班</td><td class=n>${fmt(a)} 元</td></tr><tr><td>休息日加班</td><td class=n>${fmt(b)} 元</td></tr><tr><td>國定假日出勤</td><td class=n>${fmt(c)} 元</td></tr>`})</script></body></html>
+bind(()=>{const hr=num('sal')/240,W=num('wd'),Wn=num('wdn'),R=num('rd'),Rn=num('rdn'),H=num('hd'),Hn=num('hdn');
+const a=wd(W)*hr*Wn,b=rd(R)*hr*Rn,c=hd(H)*hr*Hn,tot=a+b+c;
+const hrs=Math.min(W,4)*Wn+Math.min(R,12)*Rn+Math.max(Math.min(H,12)-8,0)*Hn;
+$('tot').textContent=fmt(tot)+' 元';$('hr').textContent='時薪 = '+fmt(num('sal'))+' ÷ 240 = '+hr.toFixed(1)+' 元';
+$('tb').innerHTML=`<tr><td>平日加班</td><td class=n>${fmt(a)} 元</td></tr><tr><td>休息日加班</td><td class=n>${fmt(b)} 元</td></tr><tr><td>國定假日出勤</td><td class=n>${fmt(c)} 元</td></tr>`;
+$('mcover').style.width=(100-Math.min(hrs,100))+'%';$('mval').textContent='本月延長工時 '+r1(hrs)+' 小時';
+const T=[];
+if(W>4)T.push(['wd','alert','平日加班最多 4 小時（一天總工時上限 12 小時），多出來的部分老闆已經違法啦 🙅']);
+if(R>12)T.push(['rd','alert','休息日一天最多只能上班 12 小時，再多就違法了 🙅']);
+if(hrs===0)T.push(['mood','ok','本月零加班，準時下班的人生勝利組 🎉 今晚的時間全是你的！']);
+else if(hrs<20)T.push(['mood','info',`加班費 ${fmt(tot)} 元，大約等於 ${Math.floor(tot/60)} 杯珍奶 🧋 辛苦了，犒賞自己一杯吧！`]);
+else if(hrs<45)T.push(['mood','info',`這個月加班 ${r1(hrs)} 小時，有點拚喔～週末記得好好耍廢 🛋️`]);
+if(hrs>54)T.push(['law','alert','已經衝破每月 54 小時的法定天花板！可以向地方勞工局申訴，或撥 1955 專線諮詢 📞']);
+else if(hrs>46)T.push(['law','warn','已超過每月 46 小時上限。除非公司經工會或勞資會議同意（最多 54 小時），不然就是違法加班 ⚠️']);
+if(hrs>=100)T.push(['health','danger','單月加班超過 100 小時，依勞動部過勞認定指引，已屬與腦心血管疾病「高度相關」的風險。這次不開玩笑：請盡快休息，身體不舒服請立即就醫 ❤️']);
+else if(hrs>=80)T.push(['health','danger','加班已達 80 小時的過勞高風險線（勞動部過勞認定指引：連續數月平均 80 小時以上）。請一定要好好休息，必要時就醫或撥 1955 求助 ❤️']);
+else if(hrs>=45)T.push(['health','warn',`加班 ${r1(hrs)} 小時，身體正在偷偷記帳 😴 今天早點睡好嗎？`]);
+if(Hn>0&&H>0)T.push(['hd','info','國定假日還在上班，辛苦了 🫡 小撇步：也可以跟老闆協商改成補休']);
+tips(T)})</script></body></html>
