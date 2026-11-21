@@ -5,7 +5,7 @@
 <header><div class="in"><a class="logo" href="../"><img src="../icon.svg" alt="" width="28" height="28" style="vertical-align:-7px;margin-right:6px">勞工權益計算機</a><nav><a href="../overtime/">加班費</a><a href="../annual-leave/">特休天數</a><a href="../severance/" class=on>資遣費</a><a href="../pension/">勞退自提</a><a href="../labor-insurance/">勞保年金</a></nav></div></header>
 <main>
 <h1>資遣費計算機</h1><p class="lead">依《勞工退休金條例》第12條（新制）與《勞動基準法》第16、17條（舊制、預告期間）計算。</p>
-<div class="card"><div class="grid"><div><label for="st">到職日</label><input id="st" type="date" value="2019-06-01" ></div><div><label for="ed">離職日</label><input id="ed" type="date" value="2026-11-30" ></div><div><label for="sal">平均工資（月，元）</label><input id="sal" type="number" value="40000" ></div>
+<div class="card"><div class="grid"><div><label for="st">到職日</label><input id="st" min="1950-01-01" max="2100-12-31" type="date" value="2019-06-01" ></div><div><label for="ed">離職日</label><input id="ed" min="1950-01-01" max="2100-12-31" type="date" value="2026-11-30" ></div><div><label for="sal">平均工資（月，元）</label><input id="sal" min="0" max="1000000" data-why="平均工資請輸入 0～100 萬元之間的金額" type="number" value="40000" ></div>
 <div><label for="sys">退休金制度</label><select id="sys"><option value="new">勞退新制（2005/7/1後到職多為此制）</option><option value="old">勞退舊制</option></select></div></div>
 <div class="res">資遣費 <div class="big" id="sev">-</div><p id="det"></p>若公司未依法預告，另應給付預告工資 <b id="nt">-</b></div></div>
 <div class="card"><h2 style="margin-top:0">📝 離職檢核清單 <span id="ckn" class="note"></span></h2><div class="check"><label><input type="checkbox" id="ck1"><span>向公司索取「非自願離職證明」（申請失業給付必備）</span></label><label><input type="checkbox" id="ck2"><span>確認資遣費在離職後 30 天內入帳</span></label><label><input type="checkbox" id="ck3"><span>未休特休要折算工資（可用<a href="../annual-leave/">特休計算機</a>試算）</span></label><label><input type="checkbox" id="ck4"><span>預告期間每週可請 2 天有薪「謀職假」去面試</span></label><label><input type="checkbox" id="ck5"><span>離職後 2 年內到就業服務站申請失業給付（月投保薪資 60%，最長 6 個月）</span></label><label><input type="checkbox" id="ck6"><span>確認勞保、健保已轉出，或轉到新公司／區公所</span></label></div></div>
@@ -18,7 +18,7 @@
 <h2>常見問題</h2><p><b>Q：自己離職有資遣費嗎？</b><br>一般自請離職沒有資遣費；但若因雇主違法（例如未依約給付工資、未投保勞保）而依勞基法第14條終止契約，仍可請求資遣費。</p>
 <p><b>Q：資遣費多久要發？</b><br>新制應於終止勞動契約後 30 日內發給。</p></article></main>
 <footer><div class="in">本站試算結果僅供參考，實際金額以勞動部、勞保局公告及雇主核定為準。　<a href="../about/">關於本站</a>　<a href="../privacy/">隱私權政策</a><br>© 2026 勞工權益計算機</div></footer>
-<script src="../common.js"></script><script>bind(()=>{const s=new Date($('st').value),e0=new Date($('ed').value),w=num('sal'),T=[['hug','info','被資遣不是你的錯，先把該拿的都拿好 💪']];
+<script src="../common.js"></script><script>bind(()=>{const s=dv('st'),e0=dv('ed'),w=num('sal'),T=[['hug','info','被資遣不是你的錯，先把該拿的都拿好 💪']];
 if(isNaN(s)||isNaN(e0))return tips(T);
 if(e0<=s){T.push(['date','alert','離職日要比到職日晚喔，時光機還沒發明 📅']);return tips(T)}
 const e=new Date(e0);e.setDate(e.getDate()+1);
@@ -26,7 +26,7 @@ let y=e.getFullYear()-s.getFullYear(),m=e.getMonth()-s.getMonth(),d=e.getDate()-
 if(d<0){m--;d+=new Date(e.getFullYear(),e.getMonth(),0).getDate()}if(m<0){y--;m+=12}
 const isNew=$('sys').value==='new';let base,txt;
 if(isNew){const yrs=y+m/12+d/365;base=Math.min(yrs*0.5,6);txt=`年資 ${y} 年 ${m} 個月 ${d} 天 → ${base.toFixed(3)} 個月平均工資`+(yrs*0.5>6?'（已達上限 6 個月）':'');if(yrs*0.5>=6)T.push(['cap','info','已達新制上限 6 個月平均工資，這就是資遣費的天花板了 📏'])}
-else{const mm=m+(d>0?1:0);base=y+mm/12;txt=`年資 ${y} 年 ${m} 個月 ${d} 天（舊制未滿1個月以1個月計）→ ${base.toFixed(3)} 個月平均工資`;T.push(['old','info','舊制只適用 2005/7/1 前、而且選擇留在舊制的年資；新舊制都有的話要分段計算'])}
+else{const mm=m+(d>0?1:0);base=y+mm/12;txt=`年資 ${y} 年 ${m} 個月 ${d} 天（舊制未滿1個月以1個月計）→ ${base.toFixed(3)} 個月平均工資`;T.push(['old','info','舊制只適用 2005/7/1 前、而且選擇留在舊制的年資；新舊制都有的話要分段計算']);if(s>=new Date('2005-07-01'))T.push(['old2','warn','2005/7/1 以後到職的人一律適用勞退新制，請把制度改成「新制」喔 🔄'])}
 $('sev').textContent=fmt(base*w)+' 元';$('det').textContent=txt;
 const tm=y*12+m,nd=tm<3?0:tm<12?10:tm<36?20:30;$('nt').textContent=nd?`${fmt(w/30*nd)} 元（${nd} 日）`:'無（年資未滿3個月）';
 if(!nd)T.push(['nt','info','年資未滿 3 個月，依法沒有預告工資']);

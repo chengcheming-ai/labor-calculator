@@ -5,8 +5,8 @@
 <header><div class="in"><a class="logo" href="../"><img src="../icon.svg" alt="" width="28" height="28" style="vertical-align:-7px;margin-right:6px">勞工權益計算機</a><nav><a href="../overtime/">加班費</a><a href="../annual-leave/">特休天數</a><a href="../severance/">資遣費</a><a href="../pension/" class=on>勞退自提</a><a href="../labor-insurance/">勞保年金</a></nav></div></header>
 <main>
 <h1>勞退自提計算機</h1><p class="lead">試算勞退新制個人專戶在退休時累積多少，以及自提的節稅效果。</p>
-<div class="card"><div class="grid"><div><label for="sal">目前月薪（元）</label><input id="sal" type="number" value="45000" ></div><div><label for="pct">自提比例</label><select id="pct"><option value=0>0%</option><option value=1>1%</option><option value=2>2%</option><option value=3>3%</option><option value=4>4%</option><option value=5>5%</option><option value=6 selected>6%</option></select></div>
-<div><label for="age">目前年齡</label><input id="age" type="number" value="35" ></div><div><label for="ret">請領年齡（最早60歲）</label><input id="ret" type="number" value="60" ></div><div><label for="cur">專戶目前累積（元）</label><input id="cur" type="number" value="0" ></div><div><label for="r">預估年報酬率（%）</label><input id="r" type="number" value="3" step=0.1></div><div><label for="g">預估薪資年成長（%）</label><input id="g" type="number" value="1" step=0.1></div>
+<div class="card"><div class="grid"><div><label for="sal">目前月薪（元）</label><input id="sal" min="0" max="1000000" data-why="月薪請輸入 0～100 萬元之間的金額" type="number" value="45000" ></div><div><label for="pct">自提比例</label><select id="pct"><option value=0>0%</option><option value=1>1%</option><option value=2>2%</option><option value=3>3%</option><option value=4>4%</option><option value=5>5%</option><option value=6 selected>6%</option></select></div>
+<div><label for="age">目前年齡</label><input id="age" min="15" max="64" data-why="勞工最低 15 歲，而且必須小於請領年齡" type="number" value="35" ></div><div><label for="ret">請領年齡（最早60歲）</label><input id="ret" min="60" max="75" data-why="勞退最早 60 歲才能請領，試算最多算到 75 歲" data-show="60～75 歲" type="number" value="60" ></div><div><label for="cur">專戶目前累積（元）</label><input id="cur" min="0" max="20000000" data-why="專戶累積金額請輸入 0～2,000 萬元之間" type="number" value="0" ></div><div><label for="r">預估年報酬率（%）</label><input id="r" min="0" max="10" data-why="年報酬率請設定在 0～10% 之間" data-show="0～10%" type="number" value="3" step=0.1></div><div><label for="g">預估薪資年成長（%）</label><input id="g" min="0" max="10" data-why="薪資年成長率請設定在 0～10% 之間" data-show="0～10%" type="number" value="1" step=0.1></div>
 <div><label for="tax">綜所稅級距</label><select id="tax"><option value=5>5%</option><option value=12 selected>12%</option><option value=20>20%</option><option value=30>30%</option><option value=40>40%</option></select></div></div>
 <div class="res">退休時專戶累積 <div class="big" id="tot">-</div><table id="tb"></table></div></div>
 <article><h2>勞退自提是什麼？</h2><p>勞退新制下，雇主每月必須為你提繳至少 6% 的薪資到個人專戶；你也可以自願另外提繳 0～6%，稱為「自提」。</p>
@@ -15,14 +15,14 @@
 <h2>常見問題</h2><p><b>Q：自提可以隨時停止嗎？</b><br>可以，隨時向雇主申請調整或停止。</p><p><b>Q：月提繳工資跟實際薪資一樣嗎？</b><br>依勞動部「月提繳工資分級表」對應級距，最高 150,000 元，與實際薪資可能略有差異，本計算機以實際薪資估算。</p></article></main>
 <footer><div class="in">本站試算結果僅供參考，實際金額以勞動部、勞保局公告及雇主核定為準。　<a href="../about/">關於本站</a>　<a href="../privacy/">隱私權政策</a><br>© 2026 勞工權益計算機</div></footer>
 <script src="../common.js"></script><script>function sim(n,cur,sal,p,r,g){let A=cur,own=0,s=sal;for(let i=0;i<n;i++){if(i>0&&i%12===0)s*=1+g;const w=Math.min(s,150000);A=A*(1+r)+w*(0.06+p);own+=w*p}return[A,own]}
-bind(()=>{const age=num('age'),ret=num('ret'),n=Math.max(0,(ret-age)*12),r=num('r')/100/12,g=num('g')/100,p=+$('pct').value/100,sal=num('sal'),cur=num('cur'),tax=+$('tax').value;
+bind(()=>{const ret=num('ret');$('age').max=Math.min(64,ret-1);const age=num('age'),n=Math.max(0,(ret-age)*12),r=num('r')/100/12,g=num('g')/100,p=+$('pct').value/100,sal=num('sal'),cur=num('cur'),tax=+$('tax').value;
 const[A,own]=sim(n,cur,sal,p,r,g),[B]=sim(n,cur,sal,0,r,g),tx=Math.min(sal,150000)*p*12*tax/100;
 $('tot').textContent=fmt(A)+' 元';
 $('tb').innerHTML=`<tr><td>只有雇主提繳 6%</td><td class=n>${fmt(B)} 元</td></tr><tr><td>自提多累積</td><td class=n>${fmt(A-B)} 元</td></tr><tr><td>自提本金合計</td><td class=n>${fmt(own)} 元</td></tr><tr><td>今年自提可節稅（約）</td><td class=n>${fmt(tx)} 元</td></tr>`;
 const T=[];
 if(p===0&&tax>=12)T.push(['nudge','info',`💡 改成自提 6%，今年大約可以少繳 ${fmt(Math.min(sal,150000)*0.06*12*tax/100)} 元的稅，等於政府幫你出錢存退休金 💰`]);
 if(p>0&&tax===5)T.push(['low','info','稅率 5% 的節稅效果比較小，手頭緊的話自提比例可以彈性調整，隨時都能改 👌']);
-if(ret<60)T.push(['ret','warn','勞退要滿 60 歲才能領喔，想更早退休得靠自己另外存 🏃']);
+if(sal>150000)T.push(['cap','info','勞退月提繳工資上限是 150,000 元，超過的部分不會提繳，已用上限計算 👌']);
 if(num('r')>6)T.push(['r','warn',`年報酬 ${num('r')}%？巴菲特看了都想跟你請教 😏 勞退基金長期平均大約 3～5%`]);
 if(age<30&&n>60){const[C]=sim(n-60,cur,sal,p,r,g);T.push(['young','info',`比晚 5 年才開始，現在起步可以多累積約 ${fmt(A-C)} 元，複利就是年輕人的超能力 ⚡`])}
 if(A>=5e6)T.push(['m','ok','🎉 突破 500 萬！退休後可以天天睡到自然醒 😎']);else if(A>=1e6)T.push(['m','ok','🎉 突破百萬大關！未來的你會感謝現在的你 🙏']);

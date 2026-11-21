@@ -36,12 +36,15 @@ h2::before{content:"";display:inline-block;width:4px;height:18px;border-radius:2
 .card{background:var(--card);border:1px solid var(--card-b);border-radius:16px;padding:22px;margin-bottom:22px;
   box-shadow:0 10px 40px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.05);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.grid>div{display:flex;flex-direction:column;justify-content:flex-end}
 
 /* 表單 */
 label{display:block;font-size:14px;color:var(--mut);margin-bottom:6px}
 input,select{width:100%;font:inherit;font-size:17px;padding:10px 12px;border:1px solid var(--in-b);border-radius:10px;background:var(--in);color:#fff;transition:border-color .2s,box-shadow .2s}
 input:hover,select:hover{border-color:#3a4a80}
 input:focus,select:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px rgba(76,201,240,.22),0 0 18px rgba(76,201,240,.25)}
+input.over,input.over:focus{border-color:#ff9a3c;box-shadow:0 0 0 3px rgba(255,154,60,.25),0 0 16px rgba(255,154,60,.25)}
+.lim{display:inline-block;margin-left:4px;padding:0 7px;border-radius:999px;font-size:12px;line-height:18px;color:#ffd08a;background:rgba(255,179,71,.12);border:1px solid rgba(255,179,71,.3)}
 input::-webkit-calendar-picker-indicator{filter:invert(.85)}
 select option{background:#0e1530;color:#fff}
 

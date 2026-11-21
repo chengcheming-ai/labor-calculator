@@ -1,5 +1,22 @@
 const $=id=>document.getElementById(id);
-const num=id=>{const v=parseFloat(String($(id).value).replace(/,/g,''));return isNaN(v)?0:v};
+
+/* 欄位上下限：超出時以上下限計算，輸入框亮橘框，並在結果區說明原因（data-why） */
+const _over=[];
+const _lab=id=>{const l=document.querySelector(`label[for="${id}"]`);if(!l)return id;
+  return [...l.childNodes].filter(n=>n.nodeType===3).map(n=>n.textContent).join('').replace(/（.*?）/g,'').trim()};
+function _flag(e,id,bad,msg){e.classList.toggle('over',bad);if(bad&&!_over.some(o=>o[0]==='lim-'+id))_over.push(['lim-'+id,'warn',msg])}
+const num=id=>{
+  const e=$(id);let v=parseFloat(String(e.value).replace(/,/g,''));if(isNaN(v))v=0;
+  const lo=e.min!==''?+e.min:-Infinity,hi=e.max!==''?+e.max:Infinity,c=Math.min(Math.max(v,lo),hi);
+  _flag(e,id,c!==v&&e.value!=='',`「${_lab(id)}」${v>hi?'最多':'最少'}是 ${c.toLocaleString('zh-TW')}：${e.dataset.why||'超出合理範圍'}。已先用 ${c.toLocaleString('zh-TW')} 計算 ✋`);
+  return c};
+const dv=id=>{
+  const e=$(id),s=e.value;if(!s)return new Date(NaN);
+  const c=e.min&&s<e.min?e.min:e.max&&s>e.max?e.max:s;
+  _flag(e,id,c!==s,`「${_lab(id)}」要介於 ${e.min} 到 ${e.max} 之間，已先用 ${c} 計算 ✋`);
+  return new Date(c)};
+/* 在欄位名稱旁標出法定上限（data-show） */
+document.querySelectorAll('input[data-show]').forEach(e=>{const l=document.querySelector(`label[for="${e.id}"]`);if(l)l.insertAdjacentHTML('beforeend',` <span class="lim">${e.dataset.show}</span>`)});
 const fmt=n=>Math.round(n).toLocaleString('zh-TW');
 const r1=x=>Math.round(x*10)/10;
 
@@ -10,7 +27,8 @@ function bind(fn){
   const els=[...document.querySelectorAll('input,select')].filter(e=>e.id),saved=store.get(),keep=e=>e.dataset.nosave===undefined;
   els.forEach(e=>{if(keep(e)&&e.id in saved){if(e.type==='checkbox')e.checked=saved[e.id];else e.value=saved[e.id]}});
   const save=()=>{const o={};els.forEach(e=>{if(keep(e))o[e.id]=e.type==='checkbox'?e.checked:e.value});store.set(o)};
-  els.forEach(e=>e.addEventListener('input',()=>{fn();save()}));fn();
+  const run=()=>{_over.length=0;fn()};
+  els.forEach(e=>e.addEventListener('input',()=>{run();save()}));run();
 }
 
 /* 結果區：自動加上提示條容器與「複製／清除」按鈕 */
@@ -32,7 +50,7 @@ document.querySelectorAll('.res').forEach(res=>{
 
 /* 提示條：list = [[id, 等級(ok/info/warn/alert/danger), 文字], ...]，只有新出現或等級改變的才會播放動畫 */
 function tips(list){
-  const box=$('tips');if(!box)return;const keep=new Set();
+  const box=$('tips');if(!box)return;const keep=new Set();list=[..._over,...list];
   list.forEach(([id,lv,t],i)=>{
     keep.add(id);let el=box.querySelector(`[data-id="${id}"]`);
     if(!el){el=document.createElement('div');el.dataset.id=id;el.className='tip '+lv;el.dataset.lv=lv}

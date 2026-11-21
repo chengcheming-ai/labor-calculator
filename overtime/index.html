@@ -5,9 +5,9 @@
 <header><div class="in"><a class="logo" href="../"><img src="../icon.svg" alt="" width="28" height="28" style="vertical-align:-7px;margin-right:6px">勞工權益計算機</a><nav><a href="../overtime/" class=on>加班費</a><a href="../annual-leave/">特休天數</a><a href="../severance/">資遣費</a><a href="../pension/">勞退自提</a><a href="../labor-insurance/">勞保年金</a></nav></div></header>
 <main>
 <h1>加班費計算機</h1><p class="lead">依《勞動基準法》第24條、第39條計算，適用月薪制勞工。</p>
-<div class="card"><div class="grid"><div><label for="sal">月薪（元）</label><input id="sal" type="number" value="36000" ></div><div><label for="wd">平日加班：每次幾小時</label><input id="wd" type="number" value="2" min=0 max=4 step=0.5></div><div><label for="wdn">平日加班：次數</label><input id="wdn" type="number" value="5" ></div>
-<div><label for="rd">休息日加班：每次幾小時</label><input id="rd" type="number" value="8" min=0 max=12 step=0.5></div><div><label for="rdn">休息日加班：次數</label><input id="rdn" type="number" value="1" ></div>
-<div><label for="hd">國定假日出勤：每次幾小時</label><input id="hd" type="number" value="8" min=0 max=12 step=0.5></div><div><label for="hdn">國定假日出勤：次數</label><input id="hdn" type="number" value="0" ></div></div>
+<div class="card"><div class="grid"><div><label for="sal">月薪（元）</label><input id="sal" min="0" max="1000000" data-why="月薪請輸入 0～100 萬元之間的金額" type="number" value="36000" ></div><div><label for="wd">平日加班：每次幾小時</label><input id="wd" min="0" max="4" data-why="勞基法規定一天總工時最多 12 小時，所以平日加班最多 4 小時" data-show="最多 4 小時" type="number" value="2" step=0.5></div><div><label for="wdn">平日加班：次數</label><input id="wdn" min="0" max="23" data-why="一個月扣掉例假與休息日，最多約 23 個工作日" data-show="最多 23 次" type="number" value="5" ></div>
+<div><label for="rd">休息日加班：每次幾小時</label><input id="rd" min="0" max="12" data-why="休息日出勤一天最多 12 小時" data-show="最多 12 小時" type="number" value="8" step=0.5></div><div><label for="rdn">休息日加班：次數</label><input id="rdn" min="0" max="5" data-why="一個月最多只有 5 個休息日" data-show="最多 5 次" type="number" value="1" ></div>
+<div><label for="hd">國定假日出勤：每次幾小時</label><input id="hd" min="0" max="12" data-why="一天總工時最多 12 小時" data-show="最多 12 小時" type="number" value="8" step=0.5></div><div><label for="hdn">國定假日出勤：次數</label><input id="hdn" min="0" max="6" data-why="單月國定假日最多約 6 天（例如春節所在月份）" data-show="最多 6 次" type="number" value="0" ></div></div>
 <div class="res">本月加班費合計 <div class="big" id="tot">-</div><div class="meter"><div class="mhead"><span>😴 疲勞儀表</span><b id="mval"></b></div><div class="mbar"><div id="mcover"></div><i style="left:46%" data-l="46h 法定上限"></i><i style="left:80%" data-l="80h 過勞線"></i></div></div><table id="tb"></table><p class="note" id="hr"></p></div></div>
 <article><h2>加班費怎麼算？</h2>
 <p>月薪制勞工的時薪＝月薪 ÷ 30 ÷ 8。例如月薪 36,000 元，時薪就是 150 元。</p>
@@ -31,10 +31,9 @@ $('tot').textContent=fmt(tot)+' 元';$('hr').textContent='時薪 = '+fmt(num('sa
 $('tb').innerHTML=`<tr><td>平日加班</td><td class=n>${fmt(a)} 元</td></tr><tr><td>休息日加班</td><td class=n>${fmt(b)} 元</td></tr><tr><td>國定假日出勤</td><td class=n>${fmt(c)} 元</td></tr>`;
 $('mcover').style.width=(100-Math.min(hrs,100))+'%';$('mval').textContent='本月延長工時 '+r1(hrs)+' 小時';
 const T=[];
-if(W>4)T.push(['wd','alert','平日加班最多 4 小時（一天總工時上限 12 小時），多出來的部分老闆已經違法啦 🙅']);
-if(R>12)T.push(['rd','alert','休息日一天最多只能上班 12 小時，再多就違法了 🙅']);
+const S=num('sal');if(S>0&&S<29500)T.push(['min','info','月薪低於 2026 年最低工資 29,500 元，如果是全職工作，老闆可能已經違法囉 👀']);
 if(hrs===0)T.push(['mood','ok','本月零加班，準時下班的人生勝利組 🎉 今晚的時間全是你的！']);
-else if(hrs<20)T.push(['mood','info',`加班費 ${fmt(tot)} 元，大約等於 ${Math.floor(tot/60)} 杯珍奶 🧋 辛苦了，犒賞自己一杯吧！`]);
+else if(hrs<20&&tot>0)T.push(['mood','info',`加班費 ${fmt(tot)} 元，大約等於 ${Math.floor(tot/60)} 杯珍奶 🧋 辛苦了，犒賞自己一杯吧！`]);
 else if(hrs<45)T.push(['mood','info',`這個月加班 ${r1(hrs)} 小時，有點拚喔～週末記得好好耍廢 🛋️`]);
 if(hrs>54)T.push(['law','alert','已經衝破每月 54 小時的法定天花板！可以向地方勞工局申訴，或撥 1955 專線諮詢 📞']);
 else if(hrs>46)T.push(['law','warn','已超過每月 46 小時上限。除非公司經工會或勞資會議同意（最多 54 小時），不然就是違法加班 ⚠️']);
