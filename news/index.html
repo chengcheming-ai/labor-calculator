@@ -25,4 +25,4 @@ const show=k=>{box.innerHTML=k==='*'?keys.map(grp).join(''):grp(k);
 chips.innerHTML=`<button type="button" class="chip" data-k="*">全部<b>${all.length}</b></button>`+keys.map(k=>`<button type="button" class="chip" data-k="${k}">${NEWS_TOPICS[k][1]} ${NEWS_TOPICS[k][0]}<b>${all.filter(x=>x.k===k).length}</b></button>`).join('');
 chips.addEventListener('click',e=>{const c=e.target.closest('.chip');if(c)show(c.dataset.k)});
 const h=location.hash.slice(1);show(keys.includes(h)?h:'*');
-})();</script></body></html>
+})();</script><script data-goatcounter="https://laborcalc-tw.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script></body></html>
