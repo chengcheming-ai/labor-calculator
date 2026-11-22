@@ -1,7 +1,7 @@
 /* 延伸閱讀：各頁相關報導（只收天下、經理人、商周、遠見、今周刊等大型媒體，發布日期半年內）
    m=媒體 d=發布日期 t=標題 u=網址；網頁會自動隱藏超過約半年的文章。每月由排程更新。 */
 window.NEWS = {
-  updated: '2026-11-21',
+  updated: '2026-11-22',
   items: {
     overtime: [
       { m: '經理人', d: '2026-11-19', t: '2026 九合一選舉投票日上班薪水怎麼算？工作日、休息日、時薪制一次算給你看', u: 'https://www.managertoday.com.tw/articles/view/73383' },
@@ -20,12 +20,14 @@ window.NEWS = {
       { m: '今周刊', d: '2026-06-09', t: '老闆大吼「資遣費給你今天就滾」...太棒了！上班族別急著簽「自願離職」，1招拿資遣費又能領失業救濟金', u: 'https://www.businesstoday.com.tw/article/category/183034/post/202606090032/' }
     ],
     pension: [
+      { m: '經理人', d: '2026-11-03', t: '勞退自提 6% 該不該提？先問自己 2 個問題，判斷適不適合你', u: 'https://www.managertoday.com.tw/columns/view/73241' },
       { m: '商業周刊', d: '2026-07-31', t: '2026勞退新制》自提新規8/1上路！退休請領資格、新舊制差異一次看', u: 'https://www.businessweekly.com.tw/focus/blog/3022120' },
       { m: '經理人', d: '2026-07-29', t: '雇主拒絕自提 6% 怎麼辦？勞退新制 8/1 上路！5 大變革一次看', u: 'https://www.managertoday.com.tw/articles/view/72643' },
       { m: '天下雜誌', d: '2026-07-29', t: '勞退新制懶人包》6大新制8月上路！新增30天月領「猶豫期」、開放「純舊制」勞工自願提繳', u: 'https://www.cw.com.tw/article/5142231' },
       { m: '遠見雜誌', d: '2026-07-22', t: '勞退5大新制，對退休金影響在哪？完整攻略', u: 'https://www.gvm.com.tw/article/131724' }
     ],
     'labor-insurance': [
+      { m: '經理人', d: '2026-11-02', t: '勞保年金是什麼？怎麼算？2027 年有望調漲 6.03% ！請領資格、計算方式一次看', u: 'https://www.managertoday.com.tw/articles/view/73072' },
       { m: '今周刊', d: '2026-11-03', t: '11月發錢了！勞退、勞保年金、國民年金…勞保局19筆給付領到月底，「這群人」一次入帳10萬', u: 'https://www.businesstoday.com.tw/article/category/183023/post/202611030016/' },
       { m: '經理人', d: '2026-10-22', t: '勞保月領 5 萬怎麼領？勞保局點 3 關鍵，其一為年資滿 50～60 年', u: 'https://www.managertoday.com.tw/articles/view/73156' },
       { m: '天下雜誌', d: '2026-09-17', t: '不是60歲！理財專家揭密：勞保年金幾歲領「最划算」？', u: 'https://www.cw.com.tw/article/5142918' },
