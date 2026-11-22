@@ -286,6 +286,11 @@ caption{padding-bottom:6px}
 .tools .card{margin:0}
 .tools{margin-bottom:22px}
 
+/* 文章內的寬表格：手機可左右捲動 */
+article .tw{overflow-x:auto;margin-bottom:14px}
+article .tw th,article .tw td{white-space:nowrap}
+article .tw th:not(:first-child){text-align:right}
+
 /* 文章與頁尾 */
 .note{font-size:13px;color:var(--dim)}
 article p{margin:0 0 14px;color:#d6dcea}
