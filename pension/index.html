@@ -5,29 +5,41 @@
 <link rel="icon" href="../icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="../apple-touch-icon.png"><link rel="stylesheet" href="../style.css"></head><body>
 <header><div class="in"><a class="logo" href="../"><img src="../icon.svg" alt="" width="28" height="28" style="vertical-align:-7px;margin-right:6px">勞工權益計算機</a><nav><a href="../overtime/">加班費</a><a href="../annual-leave/">特休天數</a><a href="../severance/">資遣費</a><a href="../pension/" class=on>勞退自提</a><a href="../labor-insurance/">勞保年金</a><a href="../budget/">開銷規劃</a><a href="../news/">精選報導</a></nav></div></header>
 <main>
-<h1>勞退自提計算機</h1><p class="lead">試算勞退新制個人專戶在退休時累積多少，以及自提的節稅效果。</p>
-<div class="card"><div class="grid"><div><label for="sal">目前月薪（元）</label><input id="sal" min="0" max="1000000" data-why="月薪請輸入 0～100 萬元之間的金額" type="number" value="45000" ></div><div><label for="pct">自提比例</label><select id="pct"><option value=0>0%</option><option value=1>1%</option><option value=2>2%</option><option value=3>3%</option><option value=4>4%</option><option value=5>5%</option><option value=6 selected>6%</option></select></div>
-<div><label for="age">目前年齡</label><input id="age" min="15" max="64" data-why="勞工最低 15 歲，而且必須小於請領年齡" type="number" value="35" ></div><div><label for="ret">請領年齡（最早60歲）</label><input id="ret" min="60" max="75" data-why="勞退最早 60 歲才能請領，試算最多算到 75 歲" data-show="60～75 歲" type="number" value="60" ></div><div><label for="cur">專戶目前累積（元）</label><input id="cur" min="0" max="20000000" data-why="專戶累積金額請輸入 0～2,000 萬元之間" type="number" value="0" ></div><div><label for="r">預估年報酬率（%）</label><input id="r" min="0" max="10" data-why="年報酬率請設定在 0～10% 之間" data-show="0～10%" type="number" value="3" step=0.1></div><div><label for="g">預估薪資年成長（%）</label><input id="g" min="0" max="10" data-why="薪資年成長率請設定在 0～10% 之間" data-show="0～10%" type="number" value="1" step=0.1></div>
-<div><label for="tax">綜所稅級距</label><select id="tax"><option value=5>5%</option><option value=12 selected>12%</option><option value=20>20%</option><option value=30>30%</option><option value=40>40%</option></select></div></div>
-<div class="res">退休時專戶累積 <div class="big" id="tot">-</div><table id="tb"></table></div></div>
-<section class="news-box" id="news" data-k="pension"></section>
-<article><h2>勞退自提是什麼？</h2><p>勞退新制下，雇主每月必須為你提繳至少 6% 的薪資到個人專戶；你也可以自願另外提繳 0～6%，稱為「自提」。</p>
-<p>自提的金額<b>可以從當年度個人綜合所得總額中全額扣除</b>，等於這筆錢不用繳所得稅，而且享有政府保證收益（不低於 2 年期定存利率）。缺點是要等到 60 歲才能領出。</p>
-<h2>誰適合自提？</h2><p>所得稅率 12% 以上、有長期存退休金需求的人最划算。稅率 5% 或免稅的人，節稅效果較小，可以視資金需求決定。</p>
-<h2>自提 6% 一年存多少、省多少稅</h2><p>以月薪 × 6% × 12 個月估算（元），實際依月提繳工資分級表計算：</p><div class="tw"><table><tr><th>月薪</th><th>一年自提</th><th>稅率 5% 省稅</th><th>稅率 12% 省稅</th><th>稅率 20% 省稅</th></tr><tr><td>35,000</td><td class="n">25,200</td><td class="n">1,260</td><td class="n">3,024</td><td class="n">5,040</td></tr><tr><td>45,000</td><td class="n">32,400</td><td class="n">1,620</td><td class="n">3,888</td><td class="n">6,480</td></tr><tr><td>60,000</td><td class="n">43,200</td><td class="n">2,160</td><td class="n">5,184</td><td class="n">8,640</td></tr><tr><td>80,000</td><td class="n">57,600</td><td class="n">2,880</td><td class="n">6,912</td><td class="n">11,520</td></tr><tr><td>100,000</td><td class="n">72,000</td><td class="n">3,600</td><td class="n">8,640</td><td class="n">14,400</td></tr></table></div><h2>計算範例</h2><p>月薪 45,000 元、自提 6%：每月存 2,700 元，一年 32,400 元。若綜所稅適用 12% 級距，一年約省 32,400 × 12% = <b>3,888 元</b>的稅。</p>
-<h2>常見問題</h2><p><b>Q：自提可以隨時停止嗎？</b><br>可以，隨時向雇主申請調整或停止。</p><p><b>Q：月提繳工資跟實際薪資一樣嗎？</b><br>依勞動部「月提繳工資分級表」對應級距，最高 150,000 元，與實際薪資可能略有差異，本計算機以實際薪資估算。</p><p><b>Q：退休時可以月領還是一次領？</b><br>年滿 60 歲且工作年資滿 15 年以上，可選擇月退休金或一次退休金；未滿 15 年只能一次領。選定並經勞保局核付後不得變更。</p></article></main>
+<h1>勞退自提計算機</h1><p class="lead">試算勞退新制「個人退休金帳戶」到退休時有多少錢，以及自己多存可以少繳多少稅。</p>
+<div class="say"><span class="em">🏦</span><div>老闆每個月都要幫你存<b>月薪的 6%</b> 到你的「退休金帳戶」。你也可以<b>自己再多存 1～6%</b>，叫做「自提」。好處是這筆錢<b>不用繳稅</b>，60 歲就能領出來。</div></div>
+<ol class="howto" aria-label="使用步驟"><li><span aria-hidden="true">💵</span>選月薪</li><li><span aria-hidden="true">🐷</span>選要多存幾 %</li><li><span aria-hidden="true">👀</span>看退休時有多少</li></ol>
+<div class="card"><div class="qgrid">
+<div><label for="sal" class="q-lab">💵 你的月薪多少？</label><input id="sal" min="0" max="1000000" data-why="月薪請輸入 0～100 萬元之間的金額" type="number" value="45000" inputmode="numeric"><div class="chips" data-for="sal" data-opts="29500:基本工資|36000:3.6 萬|45000:4.5 萬|60000:6 萬|80000:8 萬"></div></div>
+<div><label for="age" class="q-lab">🎂 你現在幾歲？</label><input id="age" class="stepper" min="15" max="59" data-why="要 15 歲以上，而且要比開始領錢的年齡小" type="number" value="35" data-range></div>
+<div><label for="pct" class="q-lab">🐷 你想自己多存月薪的幾 %？</label><input id="pct" min="0" max="6" data-why="自己多存最多是月薪的 6%" type="number" value="6" inputmode="numeric"><div class="chips" data-for="pct" data-opts="0:不存|1:1%|2:2%|3:3%|4:4%|5:5%|6:6%（最多）"></div></div>
+</div>
+<details class="more"><summary>⚙️ 更精確計算：幾歲領、帳戶已經有多少錢、投資報酬、稅率</summary><div class="grid" style="margin-top:10px"><div><label for="ret">幾歲開始領？</label><input id="ret" min="60" max="75" data-why="勞退最早 60 歲才能領，這裡最多算到 75 歲" data-show="60～75 歲" type="number" value="60" ></div><div><label for="cur">帳戶裡現在已經有（元） <button type="button" class="qm" aria-expanded="false" aria-controls="qm-cur">?</button></label><span class="qm-t" id="qm-cur" hidden>可以到勞保局 e 化服務系統或勞保局 App 查「勞退個人專戶」的金額。不知道就填 0。</span><input id="cur" min="0" max="20000000" data-why="金額請輸入 0～2,000 萬元之間" type="number" value="0" ></div><div><label for="r">每年大約賺幾 %？ <button type="button" class="qm" aria-expanded="false" aria-controls="qm-r">?</button></label><span class="qm-t" id="qm-r" hidden>政府會拿退休金去投資。過去長期平均大約每年 3～5%，而且政府保證至少有 2 年定存的利息。</span><input id="r" min="0" max="10" data-why="每年報酬請設定在 0～10% 之間" data-show="0～10%" type="number" value="3" step=0.1></div><div><label for="g">薪水每年大約加幾 %？</label><input id="g" min="0" max="10" data-why="薪水每年成長請設定在 0～10% 之間" data-show="0～10%" type="number" value="1" step=0.1></div>
+<div><label for="tax">所得稅率（報稅時的級距） <button type="button" class="qm" aria-expanded="false" aria-controls="qm-tax">?</button></label><span class="qm-t" id="qm-tax" hidden>大部分上班族是 5% 或 12%。月薪約 6 萬以下通常是 5%，再高一點多半是 12%，實際要看報稅資料。</span><select id="tax"><option value=5>5%</option><option value=12 selected>12%</option><option value=20>20%</option><option value=30>30%</option><option value=40>40%</option></select></div></div></details>
+<div class="res"><span class="lbl" id="totl">退休時，你的退休金帳戶大約有</span><div class="big" id="tot">-</div><div id="bk"></div><p id="sub"></p>
+<p class="ch-t">📈 帳戶裡的錢，會越存越多（藍線：有多存；橘線：沒多存）</p><svg id="ch1" role="img" aria-label="退休金帳戶隨年齡增加的折線圖"></svg></div></div>
+
+<article><details class="sec"><summary><span class="si" aria-hidden="true">📖</span><h2>勞退自提是什麼？</h2></summary><div class="sec-b"><p>老闆每個月一定要幫你存<b>至少月薪的 6%</b> 到你的退休金帳戶。你也可以自己再多存 0～6%，叫做「自提」。</p>
+<p>自己多存的錢，<b>報稅時可以從收入裡扣掉</b>，等於這筆錢不用繳稅。政府也保證至少有 2 年定存的利息。缺點是要等到 60 歲才能領出來。</p></div></details>
+<details class="sec"><summary><span class="si" aria-hidden="true">🙋</span><h2>誰適合自提？</h2></summary><div class="sec-b"><p>所得稅率 12% 以上、想好好存退休金的人最划算。稅率 5% 或不用繳稅的人，少繳的稅比較少，可以看自己手頭寬不寬裕再決定。</p></div></details>
+<details class="sec"><summary><span class="si" aria-hidden="true">📖</span><h2>自提 6% 一年存多少、省多少稅</h2></summary><div class="sec-b"><p>以月薪 × 6% × 12 個月估算（元），實際依月提繳工資分級表計算：</p><div class="tw"><table><tr><th>月薪</th><th>一年自提</th><th>稅率 5% 省稅</th><th>稅率 12% 省稅</th><th>稅率 20% 省稅</th></tr><tr><td>35,000</td><td class="n">25,200</td><td class="n">1,260</td><td class="n">3,024</td><td class="n">5,040</td></tr><tr><td>45,000</td><td class="n">32,400</td><td class="n">1,620</td><td class="n">3,888</td><td class="n">6,480</td></tr><tr><td>60,000</td><td class="n">43,200</td><td class="n">2,160</td><td class="n">5,184</td><td class="n">8,640</td></tr><tr><td>80,000</td><td class="n">57,600</td><td class="n">2,880</td><td class="n">6,912</td><td class="n">11,520</td></tr><tr><td>100,000</td><td class="n">72,000</td><td class="n">3,600</td><td class="n">8,640</td><td class="n">14,400</td></tr></table></div></div></details>
+<details class="sec"><summary><span class="si" aria-hidden="true">🧮</span><h2>計算範例</h2></summary><div class="sec-b"><p>月薪 45,000 元、自提 6%：每月存 2,700 元，一年 32,400 元。若綜所稅適用 12% 級距，一年約省 32,400 × 12% = <b>3,888 元</b>的稅。</p></div></details>
+<h2 class="faq-h">常見問題</h2><div class="faq"><details class="qa"><summary><span>自提可以隨時停止嗎？</span></summary><div class="qa-a">可以，隨時跟公司說要調整或停止就好。</div></details><details class="qa"><summary><span>月提繳工資跟實際薪資一樣嗎？</span></summary><div class="qa-a">不一定一樣。政府有一張「級距表」，會把你的月薪對到最接近的金額，最高 150,000 元。這個計算機直接用你的月薪來估算。</div></details><details class="qa"><summary><span>退休時可以月領還是一次領？</span></summary><div class="qa-a">60 歲以上、工作年資滿 15 年，可以選「每月領」或「一次領」；不滿 15 年只能一次領。選好、勞保局發錢之後就不能改。</div></details></div></article>
+<section class="news-box" id="news" data-k="pension"></section></main>
 <footer><div class="in">本站試算結果僅供參考，實際金額以勞動部、勞保局公告及雇主核定為準。　<a href="../about/">關於本站</a>　<a href="../privacy/">隱私權政策</a><br>其他網站：<a href="https://chengcheming-ai.github.io/interval-timer/" target="_blank" rel="noopener">間歇計時器</a>　<a href="https://chengcheming-ai.github.io/zhu-zai-shen-pang/" target="_blank" rel="noopener">主在身旁｜華語敬拜詩歌</a><br>© 2026 勞工權益計算機</div></footer>
-<script src="../news.js"></script><script src="../common.js"></script><script>function sim(n,cur,sal,p,r,g){let A=cur,own=0,s=sal;for(let i=0;i<n;i++){if(i>0&&i%12===0)s*=1+g;const w=Math.min(s,150000);A=A*(1+r)+w*(0.06+p);own+=w*p}return[A,own]}
-bind(()=>{const ret=num('ret');$('age').max=Math.min(64,ret-1);const age=num('age'),n=Math.max(0,(ret-age)*12),r=num('r')/100/12,g=num('g')/100,p=+$('pct').value/100,sal=num('sal'),cur=num('cur'),tax=+$('tax').value;
-const[A,own]=sim(n,cur,sal,p,r,g),[B]=sim(n,cur,sal,0,r,g),tx=Math.min(sal,150000)*p*12*tax/100;
-$('tot').textContent=fmt(A)+' 元';
-$('tb').innerHTML=`<tr><td>只有雇主提繳 6%</td><td class=n>${fmt(B)} 元</td></tr><tr><td>自提多累積</td><td class=n>${fmt(A-B)} 元</td></tr><tr><td>自提本金合計</td><td class=n>${fmt(own)} 元</td></tr><tr><td>今年自提可節稅（約）</td><td class=n>${fmt(tx)} 元</td></tr>`;
+<script src="../news.js"></script><script src="../common.js"></script><script>function sim(n,cur,sal,p,r,g,every){let A=cur,own=0,s=sal;const pts=[A];for(let i=0;i<n;i++){if(i>0&&i%12===0)s*=1+g;const w=Math.min(s,150000);A=A*(1+r)+w*(0.06+p);own+=w*p;if(every&&(i+1)%12===0)pts.push(A)}return[A,own,pts]}
+bind(()=>{const ret=num('ret');$('age').max=Math.min(64,ret-1);const age=num('age'),yrs=Math.max(0,ret-age),n=yrs*12,r=num('r')/100/12,g=num('g')/100,p=num('pct')/100,sal=num('sal'),cur=num('cur'),tax=+$('tax').value;
+const[A,own,PA]=sim(n,cur,sal,p,r,g,1),[B,,PB]=sim(n,cur,sal,0,r,g,1),tx=Math.min(sal,150000)*p*12*tax/100;
+$('totl').textContent=`${ret} 歲時，你的退休金帳戶大約有`;$('tot').textContent=fmt(A)+' 元';
+hbars($('bk'),[{n:'只靠老闆',v:B,t:wan(B)+' 元',c:'s1'},{n:p>0?`多存 ${num('pct')}%`:'不多存',v:A,t:wan(A)+' 元',c:'s0'}]);
+$('sub').innerHTML=p>0?`自己多存，退休時會<b>多出 ${fmt(A-B)} 元</b>（其中你自己存的本金是 ${fmt(own)} 元）。<br>今年還可以<b>少繳大約 ${fmt(tx)} 元的稅</b>。`:'現在沒有自己多存。選上面的「1%～6%」，看看會多出多少錢 👆';
+const xs=PA.map((_,i)=>age+i);
+chart($('ch1'),{type:'line',xs:xs.map(x=>x+''),xu:'歲',series:[{v:PA,name:p>0?`自己多存 ${num('pct')}%`:'目前'},...(p>0?[{v:PB,name:'只靠老闆存'}]:[])],hi:PA.length-1,hiText:`${ret} 歲：${wan(A)}`});
 const T=[];
-if(p===0&&tax>=12)T.push(['nudge','info',`💡 改成自提 6%，今年大約可以少繳 ${fmt(Math.min(sal,150000)*0.06*12*tax/100)} 元的稅，等於政府幫你出錢存退休金 💰`]);
-if(p>0&&tax===5)T.push(['low','info','稅率 5% 的節稅效果比較小，手頭緊的話自提比例可以彈性調整，隨時都能改 👌']);
-if(sal>150000)T.push(['cap','info','勞退月提繳工資上限是 150,000 元，超過的部分不會提繳，已用上限計算 👌']);
-if(num('r')>6)T.push(['r','warn',`年報酬 ${num('r')}%？巴菲特看了都想跟你請教 😏 勞退基金長期平均大約 3～5%`]);
-if(age<30&&n>60){const[C]=sim(n-60,cur,sal,p,r,g);T.push(['young','info',`比晚 5 年才開始，現在起步可以多累積約 ${fmt(A-C)} 元，複利就是年輕人的超能力 ⚡`])}
-if(A>=5e6)T.push(['m','ok','🎉 突破 500 萬！退休後可以天天睡到自然醒 😎']);else if(A>=1e6)T.push(['m','ok','🎉 突破百萬大關！未來的你會感謝現在的你 🙏']);
+if(p===0&&tax>=12)T.push(['nudge','info',`💡 如果自己多存 6%，今年大約可以少繳 ${fmt(Math.min(sal,150000)*0.06*12*tax/100)} 元的稅，就像政府幫你出錢存退休金 💰`]);
+if(p>0&&tax===5)T.push(['low','info','稅率 5% 的人，少繳的稅比較少。如果手頭比較緊，可以少存一點，隨時都能改 👌']);
+if(sal>150000)T.push(['cap','info','退休金最多只算到月薪 150,000 元，超過的部分不會存進去，已經用上限算 👌']);
+if(num('r')>6)T.push(['r','warn',`每年賺 ${num('r')}%？這太樂觀了 😏 政府退休基金長期平均大約 3～5%`]);
+if(age<30&&n>60){const[C]=sim(n-60,cur,sal,p,r,g);T.push(['young','info',`現在就開始存，比晚 5 年開始多存大約 ${fmt(A-C)} 元。越早存，錢滾錢越多 ⚡`])}
+if(A>=5e6)T.push(['m','ok','🎉 超過 500 萬！退休後可以過得很輕鬆 😎']);else if(A>=1e6)T.push(['m','ok','🎉 超過 100 萬！未來的你會謝謝現在的你 🙏']);
 celebrate('m1',A>=1e6);celebrate('m5',A>=5e6);
 tips(T)})</script><script data-goatcounter="https://laborcalc-tw.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script></body></html>

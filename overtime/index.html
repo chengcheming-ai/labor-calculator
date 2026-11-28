@@ -5,24 +5,30 @@
 <link rel="icon" href="../icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="../apple-touch-icon.png"><link rel="stylesheet" href="../style.css"></head><body>
 <header><div class="in"><a class="logo" href="../"><img src="../icon.svg" alt="" width="28" height="28" style="vertical-align:-7px;margin-right:6px">勞工權益計算機</a><nav><a href="../overtime/" class=on>加班費</a><a href="../annual-leave/">特休天數</a><a href="../severance/">資遣費</a><a href="../pension/">勞退自提</a><a href="../labor-insurance/">勞保年金</a><a href="../budget/">開銷規劃</a><a href="../news/">精選報導</a></nav></div></header>
 <main>
-<h1>加班費計算機</h1><p class="lead">依《勞動基準法》第24條、第39條計算，適用月薪制勞工。</p>
-<div class="card"><div class="grid"><div><label for="sal">月薪（元）</label><input id="sal" min="0" max="1000000" data-why="月薪請輸入 0～100 萬元之間的金額" type="number" value="36000" ></div><div><label for="wd">平日加班：每次幾小時</label><input id="wd" min="0" max="4" data-why="勞基法規定一天總工時最多 12 小時，所以平日加班最多 4 小時" data-show="最多 4 小時" type="number" value="2" step=0.5></div><div><label for="wdn">平日加班：次數</label><input id="wdn" min="0" max="23" data-why="一個月扣掉例假與休息日，最多約 23 個工作日" data-show="最多 23 次" type="number" value="5" ></div>
-<div><label for="rd">休息日加班：每次幾小時</label><input id="rd" min="0" max="12" data-why="休息日出勤一天最多 12 小時" data-show="最多 12 小時" type="number" value="8" step=0.5></div><div><label for="rdn">休息日加班：次數</label><input id="rdn" min="0" max="5" data-why="一個月最多只有 5 個休息日" data-show="最多 5 次" type="number" value="1" ></div>
-<div><label for="hd">國定假日出勤：每次幾小時</label><input id="hd" min="0" max="12" data-why="一天總工時最多 12 小時" data-show="最多 12 小時" type="number" value="8" step=0.5></div><div><label for="hdn">國定假日出勤：次數</label><input id="hdn" min="0" max="6" data-why="單月國定假日最多約 6 天（例如春節所在月份）" data-show="最多 6 次" type="number" value="0" ></div></div>
-<div class="res">本月加班費合計 <div class="big" id="tot">-</div><div class="meter"><div class="mhead"><span>😴 疲勞儀表</span><b id="mval"></b></div><div class="mbar"><div id="mcover"></div><i style="left:46%" data-l="46h 法定上限"></i><i style="left:80%" data-l="80h 過勞線"></i></div></div><table id="tb"></table><p class="note" id="hr"></p></div></div>
-<section class="news-box" id="news" data-k="overtime"></section>
-<article><h2>加班費怎麼算？</h2>
-<p>月薪制勞工的時薪＝月薪 ÷ 30 ÷ 8。例如月薪 36,000 元，時薪就是 150 元。</p>
-<table><tr><th>加班類型</th><th>時段</th><th>倍率</th></tr>
+<h1>加班費計算機</h1><p class="lead">依《勞動基準法》第24條、第39條計算，適用領月薪的人。</p>
+<div class="say"><span class="em">💼</span><div>下班後還在工作、放假還去上班，老闆都要<b>多付錢</b>給你，這就是加班費。加得越久，每小時領得越多。</div></div>
+<ol class="howto" aria-label="使用步驟"><li><span aria-hidden="true">✏️</span>選月薪</li><li><span aria-hidden="true">⏰</span>按＋－填加班</li><li><span aria-hidden="true">👀</span>看結果</li></ol>
+<div class="card"><div class="qgrid">
+<div><label for="sal" class="q-lab">💵 你的月薪多少？</label><input id="sal" min="0" max="1000000" data-why="月薪請輸入 0～100 萬元之間的金額" type="number" value="36000" inputmode="numeric"><div class="chips" data-for="sal" data-opts="29500:基本工資|30000:3 萬|36000:3.6 萬|45000:4.5 萬|60000:6 萬"></div></div>
+<div class="ot"><h3>🏢 上班日，下班後加班<small>週一到週五</small></h3><div class="row2"><div><label for="wd">每次加幾小時？</label><input id="wd" class="stepper" min="0" max="4" data-why="一天最多只能工作 12 小時，所以上班日最多加班 4 小時" data-show="最多 4" type="number" value="2" step=0.5></div><div><label for="wdn">這個月加了幾次？</label><input id="wdn" class="stepper" min="0" max="23" data-why="一個月扣掉放假日，最多約 23 個上班日" data-show="最多 23" type="number" value="5" ></div></div></div>
+<div class="ot"><h3>🛌 休息日，還去上班<small>通常是週六</small></h3><div class="row2"><div><label for="rd">每次做幾小時？</label><input id="rd" class="stepper" min="0" max="12" data-why="一天最多只能工作 12 小時" data-show="最多 12" type="number" value="8" step=0.5></div><div><label for="rdn">這個月去了幾次？</label><input id="rdn" class="stepper" min="0" max="5" data-why="一個月最多只有 5 個休息日" data-show="最多 5" type="number" value="1" ></div></div></div>
+</div>
+<details class="more" id="more"><summary>🎌 國定假日（例如中秋節）也有上班？點這裡填</summary><div class="ot" style="margin-top:10px"><div class="row2"><div><label for="hd">每次做幾小時？</label><input id="hd" class="stepper" min="0" max="12" data-why="一天最多只能工作 12 小時" data-show="最多 12" type="number" value="8" step=0.5></div><div><label for="hdn">這個月去了幾次？</label><input id="hdn" class="stepper" min="0" max="6" data-why="一個月最多大約 6 天國定假日（例如過年那個月）" data-show="最多 6" type="number" value="0" ></div></div></div></details>
+<div class="res"><span class="lbl">這個月可以多領</span><div class="big" id="tot">-</div><div id="bk"></div><div class="meter"><div class="mhead"><span>😴 累不累？加班時數</span><b id="mval"></b></div><div class="mbar"><div id="mcover"></div><i style="left:46%" data-l="46 小時：法律上限"></i><i style="left:80%" data-l="80 小時：過勞危險"></i></div></div><p class="note" id="hr"></p>
+<p class="ch-t">📊 休息日做越久，領越多（用你的月薪算）</p><svg id="ch1" role="img" aria-label="休息日加班 1 到 12 小時可以領多少錢的長條圖"></svg></div></div>
+
+<article><details class="sec"><summary><span class="si" aria-hidden="true">📐</span><h2>加班費怎麼算？</h2></summary><div class="sec-b"><p><b>第 1 步，先算時薪：</b>月薪 ÷ 30 天 ÷ 8 小時。例如月薪 36,000 元，時薪就是 150 元。</p><p><b>第 2 步，乘上倍數：</b>加班時間越長，倍數越高（1又1/3 就是多給三分之一）。</p>
+<table><tr><th>什麼時候加班</th><th>第幾個小時</th><th>時薪乘幾倍</th></tr>
 <tr><td>平日（工作日）</td><td>延長工時第 1–2 小時</td><td>1又1/3（約1.34）</td></tr><tr><td></td><td>第 3–4 小時</td><td>1又2/3（約1.67）</td></tr>
 <tr><td>休息日（通常是週六）</td><td>第 1–2 小時</td><td>1又1/3</td></tr><tr><td></td><td>第 3–8 小時</td><td>1又2/3</td></tr><tr><td></td><td>第 9–12 小時</td><td>2又2/3（約2.67）</td></tr>
-<tr><td>國定假日、特休日</td><td>8 小時內</td><td>加發 1 日工資</td></tr><tr><td></td><td>第 9–10 / 11–12 小時</td><td>1又1/3 / 1又2/3</td></tr></table>
-<h2>加班費速查表</h2><p>以月薪 ÷ 240 換算時薪，計算單次加班可以領多少（元）：</p><div class="tw"><table><tr><th>月薪</th><th>時薪</th><th>平日加班 2 小時</th><th>平日加班 4 小時</th><th>休息日加班 8 小時</th></tr><tr><td>30,000</td><td class="n">125.0</td><td class="n">333</td><td class="n">750</td><td class="n">1,583</td></tr><tr><td>36,000</td><td class="n">150.0</td><td class="n">400</td><td class="n">900</td><td class="n">1,900</td></tr><tr><td>42,000</td><td class="n">175.0</td><td class="n">467</td><td class="n">1,050</td><td class="n">2,217</td></tr><tr><td>48,000</td><td class="n">200.0</td><td class="n">533</td><td class="n">1,200</td><td class="n">2,533</td></tr><tr><td>60,000</td><td class="n">250.0</td><td class="n">667</td><td class="n">1,500</td><td class="n">3,167</td></tr></table></div><h2>計算範例</h2><p>月薪 36,000 元（時薪 150 元），某個平日加班 3 小時：前 2 小時 150 × 4/3 × 2 = 400 元，第 3 小時 150 × 5/3 = 250 元，合計 <b>650 元</b>。</p><p>同樣月薪，某個休息日加班 8 小時：前 2 小時 400 元，第 3–8 小時 150 × 5/3 × 6 = 1,500 元，合計 <b>1,900 元</b>。</p>
-<h2>常見問題</h2>
-<p><b>Q：休息日只來 1 小時，也要算 4 小時嗎？</b><br>不用。2018 年修法後，休息日加班依「實際工作時數」計算。</p>
-<p><b>Q：一天最多能加班幾小時？</b><br>正常工時加上延長工時，一日不得超過 12 小時；每月延長工時原則上不得超過 46 小時（經工會或勞資會議同意可調整至 54 小時、每三個月不超過 138 小時）。</p>
-<p><b>Q：例假日（通常是週日）可以叫員工上班嗎？</b><br>原則上不行，只有天災、事變或突發事件才可以，且須加倍發給工資並給予補假休息。</p>
-<p><b>Q：加班可以換補休嗎？</b><br>可以，但須由勞工本人同意，並依工作時數 1:1 換算補休；補休期限屆滿未休完，雇主必須發給加班費。</p><p><b>Q：時薪制的加班費怎麼算？</b><br>直接以約定的時薪當作平日每小時工資額，再乘上相同的倍率。</p><p><b>Q：「責任制」就沒有加班費嗎？</b><br>不一定。必須是勞動部核定公告的工作者，並以書面約定、報請當地主管機關核備，才適用勞基法第84條之1；公司自己說是責任制並不算數。</p></article></main>
+<tr><td>國定假日、特休日</td><td>8 小時內</td><td>加發 1 日工資</td></tr><tr><td></td><td>第 9–10 / 11–12 小時</td><td>1又1/3 / 1又2/3</td></tr></table></div></details>
+<details class="sec"><summary><span class="si" aria-hidden="true">📊</span><h2>加班費速查表</h2></summary><div class="sec-b"><p>以月薪 ÷ 240 換算時薪，計算單次加班可以領多少（元）：</p><div class="tw"><table><tr><th>月薪</th><th>時薪</th><th>平日加班 2 小時</th><th>平日加班 4 小時</th><th>休息日加班 8 小時</th></tr><tr><td>30,000</td><td class="n">125.0</td><td class="n">333</td><td class="n">750</td><td class="n">1,583</td></tr><tr><td>36,000</td><td class="n">150.0</td><td class="n">400</td><td class="n">900</td><td class="n">1,900</td></tr><tr><td>42,000</td><td class="n">175.0</td><td class="n">467</td><td class="n">1,050</td><td class="n">2,217</td></tr><tr><td>48,000</td><td class="n">200.0</td><td class="n">533</td><td class="n">1,200</td><td class="n">2,533</td></tr><tr><td>60,000</td><td class="n">250.0</td><td class="n">667</td><td class="n">1,500</td><td class="n">3,167</td></tr></table></div></div></details>
+<details class="sec"><summary><span class="si" aria-hidden="true">🧮</span><h2>計算範例</h2></summary><div class="sec-b"><p>月薪 36,000 元（時薪 150 元），某個平日加班 3 小時：前 2 小時 150 × 4/3 × 2 = 400 元，第 3 小時 150 × 5/3 = 250 元，合計 <b>650 元</b>。</p><p>同樣月薪，某個休息日加班 8 小時：前 2 小時 400 元，第 3–8 小時 150 × 5/3 × 6 = 1,500 元，合計 <b>1,900 元</b>。</p></div></details>
+<h2 class="faq-h">常見問題</h2><div class="faq"><details class="qa"><summary><span>休息日只來 1 小時，也要算 4 小時嗎？</span></summary><div class="qa-a">不用。做幾小時就算幾小時（2018 年修法後的規定）。</div></details>
+<details class="qa"><summary><span>一天最多能加班幾小時？</span></summary><div class="qa-a">一天上班加上加班，最多 12 小時。一個月加班原則上最多 46 小時；公司如果經過工會或勞資會議同意，最多可以到 54 小時，但 3 個月加起來不能超過 138 小時。</div></details>
+<details class="qa"><summary><span>例假日（通常是週日）可以叫員工上班嗎？</span></summary><div class="qa-a">原則上不行。只有天災、意外這種緊急狀況才可以，而且薪水要加倍，還要另外補一天假給你。</div></details>
+<details class="qa"><summary><span>加班可以換補休嗎？</span></summary><div class="qa-a">可以，但一定要你自己同意。加班 1 小時換 1 小時的假。期限到了還沒休完，公司要把加班費補給你。</div></details><details class="qa"><summary><span>時薪制的加班費怎麼算？</span></summary><div class="qa-a">直接用你的時薪，乘上一樣的加班倍數就好。</div></details><details class="qa"><summary><span>「責任制」就沒有加班費嗎？</span></summary><div class="qa-a">不一定。只有政府公告的特定工作，而且有寫書面約定、送政府核備，才算責任制。公司自己說是責任制，不算數。</div></details></div></article>
+<section class="news-box" id="news" data-k="overtime"></section></main>
 <footer><div class="in">本站試算結果僅供參考，實際金額以勞動部、勞保局公告及雇主核定為準。　<a href="../about/">關於本站</a>　<a href="../privacy/">隱私權政策</a><br>其他網站：<a href="https://chengcheming-ai.github.io/interval-timer/" target="_blank" rel="noopener">間歇計時器</a>　<a href="https://chengcheming-ai.github.io/zhu-zai-shen-pang/" target="_blank" rel="noopener">主在身旁｜華語敬拜詩歌</a><br>© 2026 勞工權益計算機</div></footer>
 <script src="../news.js"></script><script src="../common.js"></script><script>function wd(h){h=Math.min(h,4);return Math.min(h,2)*4/3+Math.max(Math.min(h-2,2),0)*5/3}
 function rd(h){h=Math.min(h,12);return Math.min(h,2)*4/3+Math.max(Math.min(h-2,6),0)*5/3+Math.max(Math.min(h-8,4),0)*8/3}
@@ -30,18 +36,21 @@ function hd(h){if(h<=0)return 0;h=Math.min(h,12);return 8+Math.max(Math.min(h-8,
 bind(()=>{const hr=num('sal')/240,W=num('wd'),Wn=num('wdn'),R=num('rd'),Rn=num('rdn'),H=num('hd'),Hn=num('hdn');
 const a=wd(W)*hr*Wn,b=rd(R)*hr*Rn,c=hd(H)*hr*Hn,tot=a+b+c;
 const hrs=Math.min(W,4)*Wn+Math.min(R,12)*Rn+Math.max(Math.min(H,12)-8,0)*Hn;
-$('tot').textContent=fmt(tot)+' 元';$('hr').textContent='時薪 = '+fmt(num('sal'))+' ÷ 240 = '+hr.toFixed(1)+' 元';
-$('tb').innerHTML=`<tr><td>平日加班</td><td class=n>${fmt(a)} 元</td></tr><tr><td>休息日加班</td><td class=n>${fmt(b)} 元</td></tr><tr><td>國定假日出勤</td><td class=n>${fmt(c)} 元</td></tr>`;
-$('mcover').style.width=(100-Math.min(hrs,100))+'%';$('mval').textContent='本月延長工時 '+r1(hrs)+' 小時';
+$('tot').textContent=fmt(tot)+' 元';$('hr').textContent='時薪 ＝ 月薪 '+fmt(num('sal'))+' ÷ 240 ＝ '+hr.toFixed(1)+' 元';
+hbars($('bk'),[{n:'🏢 上班日',v:a,t:fmt(a)+' 元',c:'s0'},{n:'🛌 休息日',v:b,t:fmt(b)+' 元',c:'s1'},...(Hn>0||c>0?[{n:'🎌 國定假日',v:c,t:fmt(c)+' 元',c:'s2'}]:[])]);
+$('mcover').style.width=(100-Math.min(hrs,100))+'%';$('mval').textContent='這個月加班 '+r1(hrs)+' 小時';
+const hs=Array.from({length:12},(_,i)=>i+1);
+chart($('ch1'),{type:'bar',xs:hs.map(h=>h+''),xu:'小時',series:[{v:hs.map(h=>rd(h)*hr)}],hi:R>0?Math.min(12,Math.ceil(R))-1:null,hiText:R>0?`做 ${r1(R)} 小時：${fmt(rd(R)*hr)} 元`:''});
 const T=[];
-const S=num('sal');if(S>0&&S<29500)T.push(['min','info','月薪低於 2026 年最低工資 29,500 元，如果是全職工作，老闆可能已經違法囉 👀']);
-if(hrs===0)T.push(['mood','ok','本月零加班，準時下班的人生勝利組 🎉 今晚的時間全是你的！']);
-else if(hrs<20&&tot>0)T.push(['mood','info',`加班費 ${fmt(tot)} 元，大約等於 ${Math.floor(tot/60)} 杯珍奶 🧋 辛苦了，犒賞自己一杯吧！`]);
-else if(hrs<45)T.push(['mood','info',`這個月加班 ${r1(hrs)} 小時，有點拚喔～週末記得好好耍廢 🛋️`]);
-if(hrs>54)T.push(['law','alert','已經衝破每月 54 小時的法定天花板！可以向地方勞工局申訴，或撥 1955 專線諮詢 📞']);
-else if(hrs>46)T.push(['law','warn','已超過每月 46 小時上限。除非公司經工會或勞資會議同意（最多 54 小時），不然就是違法加班 ⚠️']);
-if(hrs>=100)T.push(['health','danger','單月加班超過 100 小時，依勞動部過勞認定指引，已屬與腦心血管疾病「高度相關」的風險。這次不開玩笑：請盡快休息，身體不舒服請立即就醫 ❤️']);
-else if(hrs>=80)T.push(['health','danger','加班已達 80 小時的過勞高風險線（勞動部過勞認定指引：連續數月平均 80 小時以上）。請一定要好好休息，必要時就醫或撥 1955 求助 ❤️']);
-else if(hrs>=45)T.push(['health','warn',`加班 ${r1(hrs)} 小時，身體正在偷偷記帳 😴 今天早點睡好嗎？`]);
-if(Hn>0&&H>0)T.push(['hd','info','國定假日還在上班，辛苦了 🫡 小撇步：也可以跟老闆協商改成補休']);
-tips(T)})</script><script data-goatcounter="https://laborcalc-tw.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script></body></html>
+const S=num('sal');if(S>0&&S<29500)T.push(['min','info','月薪比 2026 年的最低工資 29,500 元還少。如果你是全職，老闆可能違法了 👀']);
+if(hrs===0)T.push(['mood','ok','這個月都沒加班，準時下班好棒 🎉 今晚的時間都是你的！']);
+else if(hrs<20&&tot>0)T.push(['mood','info',`加班費 ${fmt(tot)} 元，大約可以買 ${Math.floor(tot/60)} 杯珍奶 🧋 辛苦了，請自己喝一杯吧！`]);
+else if(hrs<45)T.push(['mood','info',`這個月加班 ${r1(hrs)} 小時，有點累喔～週末記得好好休息 🛋️`]);
+if(hrs>54)T.push(['law','alert','一個月加班超過 54 小時，已經超過法律最高上限！可以打 1955 免費專線問，或向勞工局申訴 📞']);
+else if(hrs>46)T.push(['law','warn','一個月加班超過 46 小時了。除非公司有經過工會或勞資會議同意（最多 54 小時），不然就是違法 ⚠️']);
+if(hrs>=100)T.push(['health','danger','一個月加班超過 100 小時，很容易累出心臟和腦血管的病。這次不開玩笑：請馬上休息，身體不舒服要立刻看醫生 ❤️']);
+else if(hrs>=80)T.push(['health','danger','加班到 80 小時，已經是「過勞」的危險線了。請一定要休息，需要幫忙可以打 1955 ❤️']);
+else if(hrs>=45)T.push(['health','warn',`加班 ${r1(hrs)} 小時，身體會累壞的 😴 今天早點睡好嗎？`]);
+if(Hn>0&&H>0)T.push(['hd','info','國定假日還在上班，辛苦了 🫡 也可以跟老闆商量改成「補休」（之後放一天假）']);
+tips(T)});
+if(num('hdn')>0)$('more').open=true;</script><script data-goatcounter="https://laborcalc-tw.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script></body></html>

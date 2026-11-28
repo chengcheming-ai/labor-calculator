@@ -10,6 +10,12 @@ const $=id=>document.getElementById(id);
   h.appendChild(b);sync();
 })();
 
+/* 手機選單：把目前頁面捲到看得到的位置 */
+(()=>{const a=document.querySelector('nav a.on');if(a&&a.parentElement.scrollWidth>a.parentElement.clientWidth)a.parentElement.scrollLeft=a.offsetLeft-a.parentElement.clientWidth/2+a.offsetWidth/2})();
+
+/* 「?」小說明：點一下展開一句話解釋，再點一下收起 */
+document.addEventListener('click',e=>{const b=e.target.closest('.qm');if(!b)return;e.preventDefault();const t=$(b.getAttribute('aria-controls'));if(!t)return;const o=t.hidden;t.hidden=!o;b.setAttribute('aria-expanded',o);b.classList.toggle('open',o)});
+
 /* 欄位上下限：超出時以上下限計算，輸入框亮橘框，並在結果區說明原因（data-why） */
 const _over=[];
 const _lab=id=>{const l=document.querySelector(`label[for="${id}"]`);if(!l)return id;
@@ -49,8 +55,7 @@ document.querySelectorAll('.res').forEach(res=>{
   a.querySelector('.b-print').onclick=()=>window.print();
   a.querySelector('.b-copy').onclick=async e=>{
     const b=e.currentTarget,h=document.querySelector('h1').textContent;
-    const ins=[...document.querySelectorAll('.card .grid > div')].map(d=>{const l=d.querySelector('label'),i=d.querySelector('input,select');if(!l||!i)return'';
-      return l.textContent+'：'+(i.tagName==='SELECT'?i.options[i.selectedIndex].text:i.value)}).filter(Boolean);
+    const ins=[...document.querySelectorAll('main .card input[id],main .card select[id]')].filter(i=>i.type!=='checkbox'&&document.querySelector(`label[for="${i.id}"]`)).map(i=>_lab(i.id)+'：'+(i.tagName==='SELECT'?i.options[i.selectedIndex].text:i.value));
     a.hidden=true;const out=res.innerText.trim().replace(/\n{2,}/g,'\n');a.hidden=false;
     const txt=`【${h}】\n${ins.join('\n')}\n——\n${out}\n\n👉 ${location.href}`;
     try{await navigator.clipboard.writeText(txt)}catch(_){const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove()}
@@ -94,7 +99,7 @@ document.addEventListener('click',async e=>{
   s.innerHTML=`<div class="nb-h"><div><h2>📰 ${all?'最新媒體報導':'媒體報導精選'}</h2>
 <p class="note">${all?'':`與「${tp?tp[0]:''}」相關、`}精選天下雜誌、經理人、商業周刊、遠見雜誌、今周刊近半年的報導・更新於 ${_nesc(NEWS.updated)}</p></div>
 <a class="nb-all" href="${pre}news/">看全部精選報導 →</a></div>
-<div class="nl">${L.map(x=>newsCard(x,all)).join('')}</div>
+<div class="nl">${(all?L:L.slice(0,1)).map(x=>newsCard(x,all)).join('')}</div>${!all&&L.length>1?`<details class="nmore"><summary>再看 ${L.length-1} 篇相關報導 ▾</summary><div class="nl">${L.slice(1).map(x=>newsCard(x,false)).join('')}</div></details>`:''}
 <p class="ncopy">© ${NEWS_COPYRIGHT}</p>`;
 })();
 
@@ -104,8 +109,8 @@ function buildReport(){
   let r=$('report');if(!r){r=document.createElement('section');r.id='report';document.body.appendChild(r)}
   const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   const h=document.querySelector('h1').textContent,now=new Date(),logo=(document.querySelector('.logo img')||{}).src||'';
-  const rows=[...document.querySelectorAll('main .card .grid > div')].map(d=>{
-    const i=d.querySelector('input,select');if(!i||!i.id||i.type==='checkbox')return'';
+  const rows=[...document.querySelectorAll('main .card input[id],main .card select[id]')].map(i=>{
+    if(i.type==='checkbox'||!document.querySelector(`label[for="${i.id}"]`))return'';
     const lab=_lab(i.id);let v=i.tagName==='SELECT'?i.options[i.selectedIndex].text:i.value;
     const n=parseFloat(v);if(i.type==='number'&&!isNaN(n)&&Math.abs(n)>=1000&&!/出生年/.test(lab))v=n.toLocaleString('zh-TW');
     return `<div><span>${esc(lab)}</span><b>${esc(v||'—')}</b></div>`}).join('');
@@ -177,3 +182,69 @@ function celebrate(k,cond,onLoad){if(!(k in _cel)){_cel[k]=cond;if(cond&&onLoad)
   });
   document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init):init();
 })();
+
+/* ===== 2026-11-28 白話互動元件 ===== */
+/* 金額縮寫：12,345 → 1.2 萬；1,234,567 → 123 萬 */
+const wan=n=>{n=Math.round(n);const a=Math.abs(n);if(a<1e4)return n.toLocaleString('zh-TW');const v=n/1e4;return (Math.abs(v)>=100?Math.round(v):Math.round(v*10)/10).toLocaleString('zh-TW')+' 萬'};
+
+/* 快速選項：<div class="chips" data-for="sal" data-opts="29500:基本工資|36000:3.6 萬"></div> */
+function _chipSync(id){document.querySelectorAll(`.chips[data-for="${id}"] .chip`).forEach(b=>b.classList.toggle('on',String(b.dataset.v)===String($(id).value)))}
+document.querySelectorAll('.chips[data-for]').forEach(box=>{
+  const id=box.dataset.for,inp=$(id);if(!inp)return;
+  box.insertAdjacentHTML('beforeend',box.dataset.opts.split('|').map(o=>{const[v,l]=o.split(':');return `<button type="button" class="chip" data-v="${v}">${l||v}</button>`}).join(''));
+  box.addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;inp.value=b.dataset.v;inp.dispatchEvent(new Event('input',{bubbles:true}))});
+  inp.addEventListener('input',()=>_chipSync(id));
+});
+
+/* 加減按鈕：<input class="stepper" ...> 兩旁自動加上 － ＋ */
+document.querySelectorAll('input.stepper').forEach(inp=>{
+  const w=document.createElement('div');w.className='stp';inp.before(w);
+  const mk=(t,d)=>{const b=document.createElement('button');b.type='button';b.textContent=t;b.setAttribute('aria-label',(d>0?'增加':'減少')+_lab(inp.id));
+    b.onclick=()=>{const s=+inp.step||1,v=(parseFloat(inp.value)||0)+d*s,lo=inp.min!==''?+inp.min:-Infinity,hi=inp.max!==''?+inp.max:Infinity;inp.value=+Math.min(hi,Math.max(lo,v)).toFixed(2);inp.dispatchEvent(new Event('input',{bubbles:true}))};return b};
+  w.append(mk('－',-1),inp,mk('＋',1));
+});
+
+/* 滑桿：<input type="number" data-range> 下方自動加一條滑桿，兩者同步 */
+document.querySelectorAll('input[data-range]').forEach(inp=>{
+  const r=document.createElement('input');r.type='range';r.className='rng';r.tabIndex=-1;r.setAttribute('aria-hidden','true');
+  const sync=()=>{r.min=inp.min;r.max=inp.max;r.step=inp.step||1;r.value=inp.value;const p=(r.value-r.min)/((r.max-r.min)||1)*100;r.style.setProperty('--p',Math.max(0,Math.min(100,p))+'%')};
+  (inp.closest('.stp')||inp).after(r);
+  r.addEventListener('input',()=>{inp.value=r.value;inp.dispatchEvent(new Event('input',{bubbles:true}))});
+  inp.addEventListener('input',sync);inp._rsync=sync;
+  new MutationObserver(sync).observe(inp,{attributes:true,attributeFilter:['min','max']});
+  requestAnimationFrame(sync);
+});
+addEventListener('load',()=>{document.querySelectorAll('input[data-range]').forEach(i=>i._rsync&&i._rsync());document.querySelectorAll('.chips[data-for]').forEach(b=>_chipSync(b.dataset.for))});
+
+/* 簡易圖表：chart($('svg'),{type:'bar'|'line',xs:[x 軸文字],series:[{v:[數值],name:'名稱'}],hi:要強調的位置,yf:數字格式,xu:'x 軸單位',hiText:強調點文字}) */
+function chart(svg,o){
+  const cw=svg.getBoundingClientRect().width||380,W=Math.round(Math.max(290,Math.min(620,cw))),H=Math.round(Math.min(270,Math.max(210,W*.62))),L=50,R=14,T=28,B=36,pw=W-L-R,ph=H-T-B,n=o.xs.length,yf=o.yf||wan;
+  const mx0=Math.max(1,...o.series.flatMap(s=>s.v)),raw=mx0/4,mg=Math.pow(10,Math.floor(Math.log10(raw))),stp=[1,2,2.5,5,10].map(f=>f*mg).find(v=>v>=raw),nt=Math.ceil(mx0/stp-1e-9),mx=stp*nt;
+  const bar=o.type==='bar',X=i=>bar?L+(i+.5)*pw/n:L+(n>1?i*pw/(n-1):pw/2),Y=v=>T+ph-Math.max(0,v)/mx*ph;
+  let g='';for(let k=0;k<=nt;k++){const v=stp*k,y=Y(v);g+=`<line x1="${L}" x2="${W-R}" y1="${y}" y2="${y}" class="gl"/><text x="${L-6}" y="${y+4}" text-anchor="end">${yf(v)}</text>`}
+  const ev=Math.ceil(n/Math.max(4,Math.floor(pw/42))),near=i=>o.hi!=null&&i!==o.hi&&Math.abs(i-o.hi)<Math.max(1,ev*.7),
+    show=i=>i===o.hi||((i%ev===0||(i===n-1&&(n-1)%ev>=ev*.7))&&!near(i));
+  let xl='';o.xs.forEach((x,i)=>{if(show(i))xl+=`<text x="${X(i)}" y="${H-B+18}" text-anchor="middle"${i===o.hi?' class="xh"':''}>${x}</text>`});
+  if(o.xu)xl+=`<text x="${W-2}" y="${H-2}" text-anchor="end" class="xu">${o.xu}</text>`;
+  let body='';
+  o.series.forEach((s,si)=>{
+    if(bar){const bw=Math.min(34,pw/n*.68);s.v.forEach((v,i)=>{body+=`<rect class="b s${si}${i===o.hi?' hi':''}" x="${X(i)-bw/2}" y="${Y(v)}" width="${bw}" height="${Math.max(0,T+ph-Y(v))}" rx="3"><title>${o.xs[i]}：${yf(v)}</title></rect>`})}
+    else{const p=s.v.map((v,i)=>`${i?'L':'M'}${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join('');
+      body+=`<path class="ar s${si}" d="${p}L${X(n-1)},${T+ph}L${X(0)},${T+ph}Z"/><path class="ln s${si}" d="${p}"/>`}
+  });
+  if(o.hi!=null&&o.hi>=0&&o.hi<n){const v=o.series[0].v[o.hi],x=X(o.hi),y=Y(v),t=o.hiText||yf(v),anc=x>W-70?'end':x<L+40?'start':'middle';
+    body+=(bar?'':`<line x1="${x}" x2="${x}" y1="${y}" y2="${T+ph}" class="hl"/><circle cx="${x}" cy="${y}" r="9" class="pulse"/><circle cx="${x}" cy="${y}" r="5" class="dot"/>`)+`<text x="${x}" y="${Math.max(14,y-12)}" text-anchor="${anc}" class="ht">${t}</text>`}
+  svg._o=o;const first=!svg._drawn&&svg.getBoundingClientRect().width>0;if(first)svg._drawn=true;
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.classList.add('chart');svg.classList.toggle('intro',first&&!matchMedia('(prefers-reduced-motion: reduce)').matches);
+  svg.innerHTML=`${g}<g class="xa">${xl}</g>${body}`;
+  const lg=svg.nextElementSibling&&svg.nextElementSibling.classList.contains('lgd')?svg.nextElementSibling:null;
+  if(o.series.length>1){const h=o.series.map((s,i)=>`<span><i class="s${i}"></i>${s.name}</span>`).join('');if(lg)lg.innerHTML=h;else svg.insertAdjacentHTML('afterend',`<div class="lgd">${h}</div>`)}
+}
+
+/* 橫條比較：hbars($('box'),[{n:'名稱',v:數值,t:'顯示文字',c:'s0'}]) */
+function hbars(el,rows){const mx=Math.max(1,...rows.map(r=>r.v));
+  el.className='hb';el.innerHTML=rows.map(r=>`<div class="hr"><span class="hn">${r.n}</span><span class="hbar"><b class="${r.c||'s0'}" style="width:${r.v>0?Math.max(2,r.v/mx*100):0}%"></b></span><span class="hv">${r.t??fmt(r.v)}</span></div>`).join('')}
+
+/* 展開段落或改變視窗大小時，圖表依實際寬度重畫 */
+document.addEventListener('toggle',e=>{if(e.target.open)e.target.querySelectorAll('svg.chart').forEach(g=>g._o&&chart(g,g._o))},true);
+let _rz;addEventListener('resize',()=>{clearTimeout(_rz);_rz=setTimeout(()=>document.querySelectorAll('svg.chart').forEach(g=>g._o&&chart(g,g._o)),200)});

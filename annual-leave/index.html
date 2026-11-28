@@ -5,35 +5,72 @@
 <link rel="icon" href="../icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="../apple-touch-icon.png"><link rel="stylesheet" href="../style.css"></head><body>
 <header><div class="in"><a class="logo" href="../"><img src="../icon.svg" alt="" width="28" height="28" style="vertical-align:-7px;margin-right:6px">勞工權益計算機</a><nav><a href="../overtime/">加班費</a><a href="../annual-leave/" class=on>特休天數</a><a href="../severance/">資遣費</a><a href="../pension/">勞退自提</a><a href="../labor-insurance/">勞保年金</a><a href="../budget/">開銷規劃</a><a href="../news/">精選報導</a></nav></div></header>
 <main>
-<h1>特休天數計算機</h1><p class="lead">依《勞動基準法》第38條（週年制）計算。</p>
-<div class="card"><div class="grid"><div><label for="st">到職日</label><input id="st" min="1950-01-01" max="2100-12-31" type="date" value="2022-03-01" ></div><div><label for="dt">計算日（預設今天）</label><input id="dt" min="1950-01-01" max="2100-12-31" data-nosave type="date" value="" ></div><div><label for="sal">月薪（選填，算未休工資）</label><input id="sal" min="0" max="1000000" data-why="月薪請輸入 0～100 萬元之間的金額" type="number" value="36000" ></div><div><label for="left">未休特休天數（選填）</label><input id="left" min="0" data-why="未休特休最多是「今年特休」加上「去年遞延」的天數" type="number" value="0" ></div></div>
-<div class="res">目前年資 <b id="yr">-</b>，本年度特休 <div class="big" id="days">-</div><p id="pay"></p><table id="tb"></table></div></div>
-<section class="news-box" id="news" data-k="annual-leave"></section>
-<article><h2>特休天數對照表</h2><table><tr><th>年資</th><th>特休天數</th></tr>
+<h1>特休天數計算機</h1><p class="lead">依《勞動基準法》第38條計算，<b>只要填到職日</b>就能看到結果。 <button type="button" class="qm" aria-expanded="false" aria-controls="qm-yr">?</button><span class="qm-t" id="qm-yr" hidden>本計算機用「週年制」：從到職日起算，每滿一年重新計算。公司若用曆年制等其他方式，天數不能比週年制少。</span></p><div class="say"><span class="em">🏖️</span><div>特休就是<b>有薪水的休假</b>：休假那天，老闆照樣要給薪水。在同一家公司<b>做越久，每年能休的天數越多</b>，最多 30 天。</div></div>
+<ol class="howto" aria-label="使用步驟"><li><span aria-hidden="true">📅</span>填到職日</li><li><span aria-hidden="true">👀</span>看今年能休幾天</li><li><span aria-hidden="true">💾</span>存下來</li></ol>
+<div class="card al"><div class="grid al-quick"><div><label for="st" class="q-lab">📅 你哪一天到職？</label><input id="st" class="q-in" min="1950-01-01" max="2100-12-31" type="date" value="2022-03-01" ></div></div>
+<div class="chips" id="ago" aria-label="不記得確切日期？選一個大概的年資"><span class="note">不記得日期？點大概的年資：</span><button type="button" class="chip" data-m="6">半年</button><button type="button" class="chip" data-m="12">1 年</button><button type="button" class="chip" data-m="24">2 年</button><button type="button" class="chip" data-m="36">3 年</button><button type="button" class="chip" data-m="60">5 年</button><button type="button" class="chip" data-m="120">10 年</button><button type="button" class="chip" data-m="240">20 年</button></div>
+<div class="res"><div class="al-top"><div><span class="al-lbl">今年可以休（有薪水的假）</span><div class="big" id="days">-</div></div><div class="al-yr">🗓️ 年資<br><b id="yr">-</b></div></div>
+<div class="al-next" id="nextbox"><div class="al-nt" id="nexttxt"></div><div class="al-bar"><i id="nextbar"></i></div></div>
+<svg id="stair" class="stair" viewBox="0 0 380 212" role="img" aria-label="特休天數隨年資增加的階梯圖"></svg>
+<p id="pay"></p>
+<details class="sub"><summary>📅 接下來的特休變化（日期表）</summary><table id="tb"></table></details></div>
+<details class="more" id="more"><summary>⚙️ 更精確計算：換計算日、算未休特休可以領多少錢</summary><div class="grid"><div><label for="dt">計算日（預設今天）</label><input id="dt" min="1950-01-01" max="2100-12-31" data-nosave type="date" value="" ></div><div><label for="sal">月薪（元）</label><input id="sal" min="0" max="1000000" data-why="月薪請輸入 0～100 萬元之間的金額" type="number" value="36000" ></div><div><label for="left">還有幾天特休沒休？ <button type="button" class="qm" aria-expanded="false" aria-controls="qm-left">?</button></label><span class="qm-t" id="qm-left" hidden>年度結束或離職時還沒休完的特休，公司要折算成工資給你：月薪 ÷ 30 × 天數。</span><input id="left" min="0" data-why="未休特休最多是「今年特休」加上「去年遞延」的天數" type="number" value="0" ></div></div></details></div>
+
+<article><details class="sec"><summary><span class="si" aria-hidden="true">📋</span><h2>特休天數對照表</h2></summary><div class="sec-b"><p class="ch-t" style="margin-top:4px">📊 做越久，每年能休越多天</p><svg id="ch0" role="img" aria-label="年資和每年特休天數的長條圖"></svg><table><tr><th>年資</th><th>特休天數</th></tr>
 <tr><td>滿 6 個月，未滿 1 年</td><td>3 日</td></tr><tr><td>滿 1 年，未滿 2 年</td><td>7 日</td></tr><tr><td>滿 2 年，未滿 3 年</td><td>10 日</td></tr>
-<tr><td>滿 3 年，未滿 5 年</td><td>每年 14 日</td></tr><tr><td>滿 5 年，未滿 10 年</td><td>每年 15 日</td></tr><tr><td>滿 10 年以上</td><td>每 1 年加 1 日，最多 30 日</td></tr></table>
-<h2>滿 10 年以上的特休天數</h2><p>滿 10 年起每多 1 年加 1 日，加到 30 日為止：</p><div class="tw"><table><tr><th>年資</th><th>特休天數</th></tr><tr><td>滿 10 年</td><td class="n">16 日</td></tr><tr><td>滿 12 年</td><td class="n">18 日</td></tr><tr><td>滿 15 年</td><td class="n">21 日</td></tr><tr><td>滿 18 年</td><td class="n">24 日</td></tr><tr><td>滿 20 年</td><td class="n">26 日</td></tr><tr><td>滿 24 年</td><td class="n">30 日</td></tr></table></div><h2>計算範例</h2><p>2022 年 3 月 1 日到職：2022 年 9 月 1 日滿 6 個月，有 <b>3 日</b>；2023 年 3 月 1 日滿 1 年，有 <b>7 日</b>；2024 年滿 2 年，有 <b>10 日</b>；2025 年滿 3 年起，每年 <b>14 日</b>；2027 年滿 5 年起，每年 <b>15 日</b>。</p><p>月薪 36,000 元、還有 3 天沒休：36,000 ÷ 30 × 3 = <b>3,600 元</b>。</p>
-<h2>未休特休折現速查表</h2><p>月薪制日薪＝月薪 ÷ 30，未休特休工資＝日薪 × 未休天數（元，四捨五入）：</p><div class="tw"><table><tr><th>月薪</th><th>1 天</th><th>3 天</th><th>5 天</th><th>7 天</th><th>10 天</th></tr><tr><td>29,500（2026 基本工資）</td><td class="n">983</td><td class="n">2,950</td><td class="n">4,917</td><td class="n">6,883</td><td class="n">9,833</td></tr><tr><td>36,000</td><td class="n">1,200</td><td class="n">3,600</td><td class="n">6,000</td><td class="n">8,400</td><td class="n">12,000</td></tr><tr><td>45,000</td><td class="n">1,500</td><td class="n">4,500</td><td class="n">7,500</td><td class="n">10,500</td><td class="n">15,000</td></tr><tr><td>60,000</td><td class="n">2,000</td><td class="n">6,000</td><td class="n">10,000</td><td class="n">14,000</td><td class="n">20,000</td></tr></table></div><p class="note">折算用的月薪是年度終結或契約終止前最近 1 個月的正常工作時間工資。</p>
-<h2>雇主有哪些義務？</h2><ul><li><b>主動告知：</b>勞工符合特休條件時，雇主應告知勞工依規定排定特休。</li><li><b>特休照給工資：</b>特休期間工資應由雇主照給。</li><li><b>每年書面通知：</b>雇主應每年定期將勞工的特休天數、已休與未休日數、折發工資金額記載在工資清冊，並以書面通知勞工。</li><li><b>未休要折現：</b>年度終結或離職時沒休完的特休，雇主應發給工資，不能直接「歸零」。</li></ul><p>違反特休規定，依《勞動基準法》第79條可處 2 萬元以上、100 萬元以下罰鍰。</p>
-<h2>常見問題</h2>
-<p><b>Q：特休沒休完怎麼辦？</b><br>年度終結或契約終止時未休完的特休，雇主應發給工資，以「日薪 × 未休天數」計算（月薪制日薪＝月薪 ÷ 30）。經勞雇雙方協商，也可遞延至次一年度，但次年度終結仍未休完就要折發工資。</p>
-<p><b>Q：公司用「曆年制」計算，天數會不同嗎？</b><br>公司可採曆年制、會計年度制等方式，但換算結果不得少於週年制的天數。本計算機以週年制計算。</p>
-<p><b>Q：特休日期由誰決定？</b><br>由勞工排定，雇主若因企業經營上急迫需求，可與勞工協商調整。</p><p><b>Q：試用期算不算年資？</b><br>算。特休年資從受僱當日起算，試用期間也包含在內。</p><p><b>Q：到職未滿 6 個月就離職，有特休嗎？</b><br>沒有。特休要在同一雇主連續工作滿 6 個月才有 3 日，未滿 6 個月不會產生特休。</p><p><b>Q：離職時還有特休沒休完，可以拿錢嗎？</b><br>可以。不論自請離職、資遣或契約到期，契約終止時沒休完的特休（含遞延的天數）都應折發工資。</p><p><b>Q：特休可以遞延幾年？</b><br>經勞雇雙方協商，可遞延至次一年度實施，只能延 1 年；次一年度終結或離職時仍未休完，就要折發工資。</p><p><b>Q：兼職、部分工時人員有特休嗎？</b><br>有。部分工時勞工一樣適用特休規定，天數依其工作時間占全時勞工工作時間的比例計算。</p><p><b>Q：特休可以請半天或幾小時嗎？</b><br>可以。特休原則以「日」計，但勞工可與雇主協商以半日或小時為單位請休。</p><p><b>Q：公司不讓我休特休或不給折現，怎麼辦？</b><br>可向公司所在地的地方政府勞工局申訴，或撥打勞動部 1955 專線諮詢。建議先保留打卡紀錄、薪資單、請假紀錄等資料。</p></article></main>
+<tr><td>滿 3 年，未滿 5 年</td><td>每年 14 日</td></tr><tr><td>滿 5 年，未滿 10 年</td><td>每年 15 日</td></tr><tr><td>滿 10 年以上</td><td>每 1 年加 1 日，最多 30 日</td></tr></table></div></details>
+<details class="sec"><summary><span class="si" aria-hidden="true">📖</span><h2>滿 10 年以上的特休天數</h2></summary><div class="sec-b"><p>滿 10 年起每多 1 年加 1 日，加到 30 日為止：</p><div class="tw"><table><tr><th>年資</th><th>特休天數</th></tr><tr><td>滿 10 年</td><td class="n">16 日</td></tr><tr><td>滿 12 年</td><td class="n">18 日</td></tr><tr><td>滿 15 年</td><td class="n">21 日</td></tr><tr><td>滿 18 年</td><td class="n">24 日</td></tr><tr><td>滿 20 年</td><td class="n">26 日</td></tr><tr><td>滿 24 年</td><td class="n">30 日</td></tr></table></div></div></details>
+<details class="sec"><summary><span class="si" aria-hidden="true">🧮</span><h2>計算範例</h2></summary><div class="sec-b"><p>2022 年 3 月 1 日到職：2022 年 9 月 1 日滿 6 個月，有 <b>3 日</b>；2023 年 3 月 1 日滿 1 年，有 <b>7 日</b>；2024 年滿 2 年，有 <b>10 日</b>；2025 年滿 3 年起，每年 <b>14 日</b>；2027 年滿 5 年起，每年 <b>15 日</b>。</p><p>月薪 36,000 元、還有 3 天沒休：36,000 ÷ 30 × 3 = <b>3,600 元</b>。</p></div></details>
+<details class="sec"><summary><span class="si" aria-hidden="true">📊</span><h2>沒休的特休，可以換多少錢？</h2></summary><div class="sec-b"><p>日薪＝月薪 ÷ 30。沒休的特休可以換成：日薪 × 沒休的天數（元，四捨五入）：</p><div class="tw"><table><tr><th>月薪</th><th>1 天</th><th>3 天</th><th>5 天</th><th>7 天</th><th>10 天</th></tr><tr><td>29,500（2026 基本工資）</td><td class="n">983</td><td class="n">2,950</td><td class="n">4,917</td><td class="n">6,883</td><td class="n">9,833</td></tr><tr><td>36,000</td><td class="n">1,200</td><td class="n">3,600</td><td class="n">6,000</td><td class="n">8,400</td><td class="n">12,000</td></tr><tr><td>45,000</td><td class="n">1,500</td><td class="n">4,500</td><td class="n">7,500</td><td class="n">10,500</td><td class="n">15,000</td></tr><tr><td>60,000</td><td class="n">2,000</td><td class="n">6,000</td><td class="n">10,000</td><td class="n">14,000</td><td class="n">20,000</td></tr></table></div><p class="note">用年度結束或離職前，最近 1 個月的正常薪水來算。</p></div></details>
+<details class="sec"><summary><span class="si" aria-hidden="true">⚖️</span><h2>公司一定要做到的事</h2></summary><div class="sec-b"><ul><li><b>主動提醒：</b>你有特休時，公司要告訴你可以排休。</li><li><b>休假照領薪水：</b>特休那天，薪水要照給。</li><li><b>每年寫給你看：</b>你有幾天特休、休了幾天、沒休的換多少錢，公司每年都要記在薪水清冊上，並用書面通知你。</li><li><b>沒休完要給錢：</b>年度結束或離職時沒休完的特休，要換成錢給你，不能直接「歸零」。</li></ul><p>公司沒做到，可以被罰 2 萬到 100 萬元（《勞動基準法》第79條）。</p></div></details>
+<h2 class="faq-h">常見問題</h2><div class="faq"><details class="qa"><summary><span>特休沒休完怎麼辦？</span></summary><div class="qa-a">年度結束或離職時沒休完的特休，公司要換成錢給你：日薪（月薪 ÷ 30）× 沒休的天數。你也可以和公司說好，把假留到下一年再休；下一年結束還沒休完，就要換成錢。</div></details>
+<details class="qa"><summary><span>公司用「曆年制」計算，天數會不同嗎？</span></summary><div class="qa-a">公司可以用「每年 1 月 1 日重新算」等方法，但算出來的天數，不能比「從到職日起算」（週年制）少。這個計算機用週年制算。</div></details>
+<details class="qa"><summary><span>特休日期由誰決定？</span></summary><div class="qa-a">由你自己決定哪天休。公司真的很忙時，可以和你商量換日子。</div></details><details class="qa"><summary><span>試用期算不算年資？</span></summary><div class="qa-a">算。從上班第一天就開始算，試用期也包括在內。</div></details><details class="qa"><summary><span>到職未滿 6 個月就離職，有特休嗎？</span></summary><div class="qa-a">沒有。在同一家公司做滿 6 個月，才會有 3 天特休。</div></details><details class="qa"><summary><span>離職時還有特休沒休完，可以拿錢嗎？</span></summary><div class="qa-a">可以。不管是自己離職、被資遣或合約到期，沒休完的特休（包括從去年留下來的）都要換成錢給你。</div></details><details class="qa"><summary><span>特休可以遞延幾年？</span></summary><div class="qa-a">和公司說好的話，可以留到下一年休，但只能留 1 年。下一年結束或離職時還沒休完，就要換成錢。</div></details><details class="qa"><summary><span>兼職、部分工時人員有特休嗎？</span></summary><div class="qa-a">有。兼職的人也有特休，天數照你的工作時間占全職的比例來算。</div></details><details class="qa"><summary><span>特休可以請半天或幾小時嗎？</span></summary><div class="qa-a">可以。特休通常用「天」來算，但可以和公司商量用半天或小時來請。</div></details><details class="qa"><summary><span>公司不讓我休特休或不給折現，怎麼辦？</span></summary><div class="qa-a">可以向公司所在地的勞工局申訴，或打勞動部 1955 免費專線問。記得先留好打卡紀錄、薪水單、請假紀錄。</div></details></div></article>
+<section class="news-box" id="news" data-k="annual-leave"></section></main>
 <footer><div class="in">本站試算結果僅供參考，實際金額以勞動部、勞保局公告及雇主核定為準。　<a href="../about/">關於本站</a>　<a href="../privacy/">隱私權政策</a><br>其他網站：<a href="https://chengcheming-ai.github.io/interval-timer/" target="_blank" rel="noopener">間歇計時器</a>　<a href="https://chengcheming-ai.github.io/zhu-zai-shen-pang/" target="_blank" rel="noopener">主在身旁｜華語敬拜詩歌</a><br>© 2026 勞工權益計算機</div></footer>
 <script src="../news.js"></script><script src="../common.js"></script><script>function days(y){if(y<0.5)return 0;if(y<1)return 3;if(y<2)return 7;if(y<3)return 10;if(y<5)return 14;if(y<10)return 15;return Math.min(30,15+Math.floor(y)-9)}
 function addM(d,m){const r=new Date(d);r.setMonth(r.getMonth()+m);return r}
 const dd=(a,b)=>Math.ceil((b-a)/864e5);
 const ms=[6,12,24,36,48,60,72,84,96,108,120,132,144,156,168,180,192,204,216,228,240,252,264,276,288];
 if(!$('dt').value)$('dt').valueAsDate=new Date();
+/* 階梯圖 */
+const SX=y=>30+Math.sqrt(Math.min(y,26)/26)*335,SY=d=>182-d/30*160;
+(()=>{const th=[0,0.5,1,2,3,5,...Array.from({length:15},(_,i)=>10+i)];let p=`M${SX(0)},${SY(0)}`;
+ th.forEach((t,i)=>{if(i)p+=`H${SX(t)}V${SY(days(t))}`});p+=`H${SX(26)}`;
+ const ax=[0,1,2,3,5,10,15,20,25].map(t=>`<text x="${SX(t)}" y="202" text-anchor="middle">${t}</text>`).join('');
+ const ay=[0,10,20,30].map(d=>`<line x1="30" x2="365" y1="${SY(d)}" y2="${SY(d)}" class="gl"/><text x="24" y="${SY(d)+4}" text-anchor="end">${d}</text>`).join('');
+ $('stair').innerHTML=`<defs><linearGradient id="sg" x1="0" x2="1"><stop offset="0" stop-color="#4cc9f0"/><stop offset="1" stop-color="#8b7bff"/></linearGradient><clipPath id="done"><rect id="donerect" x="0" y="0" width="0" height="212"/></clipPath></defs>
+${ay}<g class="ax">${ax}<text x="378" y="202" text-anchor="end">年</text><text x="24" y="10" text-anchor="end">天</text></g>
+<path d="${p}V${SY(0)}H${SX(0)}Z" class="area"/><path d="${p}V${SY(0)}H${SX(0)}Z" class="area on" clip-path="url(#done)"/>
+<path d="${p}" class="line"/><path d="${p}" class="line on" clip-path="url(#done)"/>
+<g id="nxt" class="nxt"><circle r="5"/><text id="nxtt" dy="22" text-anchor="middle"></text></g>
+<g id="me" class="me"><circle r="9" class="pulse"/><circle r="5"/><text id="met" dy="-16" text-anchor="middle"></text></g>`})();
+function stair(y,cur,ny,nd){
+ const x=SX(y);$('donerect').setAttribute('width',x);
+ const me=$('me');me.style.transform=`translate(${x}px,${SY(cur)}px)`;$('met').textContent=`你在這裡 ${cur} 天`;
+ $('met').setAttribute('text-anchor',x>300?'end':x<80?'start':'middle');
+ const n=$('nxt');n.style.display=ny===null?'none':'';if(ny!==null){n.style.transform=`translate(${SX(ny)}px,${SY(nd)}px)`;$('nxtt').textContent=`下一階 ${nd} 天`;$('nxtt').setAttribute('text-anchor',SX(ny)>300?'end':'middle')}}
+/* 「大概年資」按鈕 */
+$('ago').addEventListener('click',e=>{const b=e.target.closest('button[data-m]');if(!b)return;const t=dv('dt'),d=addM(isNaN(t)?new Date():t,-b.dataset.m);
+ $('st').value=d.toISOString().slice(0,10);$('st').dispatchEvent(new Event('input'));
+ document.querySelectorAll('#ago button').forEach(x=>x.classList.toggle('on',x===b))});
+$('st').addEventListener('input',e=>{if(e.isTrusted)document.querySelectorAll('#ago button').forEach(x=>x.classList.remove('on'))});
+chart($('ch0'),{type:'bar',xs:['半年','1','2','3','5','10','15','20','24'],xu:'年',yf:v=>Math.round(v)+'',series:[{v:[3,7,10,14,15,16,21,26,30]}]});
 bind(()=>{const s=dv('st'),t=dv('dt');if(isNaN(s)||isNaN(t))return;
 let m=(t.getFullYear()-s.getFullYear())*12+t.getMonth()-s.getMonth();if(t.getDate()<s.getDate())m--;const y=m/12,cur=days(y),T=[];$('left').max=cur*2;
-if(m<0){$('yr').textContent='尚未到職';$('days').textContent='0 天';$('pay').textContent='';$('tb').innerHTML='';
+if(m<0){$('yr').textContent='尚未到職';$('days').textContent='0 天';$('pay').textContent='';$('tb').innerHTML='';$('nexttxt').textContent='';$('nextbar').style.width='0';stair(0,0,0.5,3);
  tips([['neg','alert','到職日比計算日還晚？穿越時空的員工你好 👽 請檢查一下日期']]);return}
 $('yr').textContent=Math.floor(m/12)+' 年 '+(m%12)+' 個月';$('days').textContent=cur+' 天';
-$('pay').textContent=num('left')>0?'未休 '+num('left')+' 天可折算工資：'+fmt(num('sal')/30*num('left'))+' 元':'';
+$('pay').innerHTML=num('left')>0?`💰 未休 ${num('left')} 天可折算工資：<b>${fmt(num('sal')/30*num('left'))} 元</b>`:'';
 let rows='<tr><th>日期</th><th>年資</th><th>當年度特休</th></tr>',c=0,nx=null;
 for(const k of ms){if(k<=m)continue;if(nx===null&&days(k/12)>cur)nx=k;const d=addM(s,k);rows+=`<tr><td>${d.toLocaleDateString('zh-TW')}</td><td>${k<12?'6 個月':k/12+' 年'}</td><td>${days(k/12)} 天</td></tr>`;if(++c>=6)break}
-$('tb').innerHTML='<caption class=note style="text-align:left">接下來的特休變化</caption>'+rows;
+$('tb').innerHTML=rows;
+/* 下一階進度 */
+const st0=[0,...ms].find(k=>days(k/12)===cur)??0;
+if(nx===null){$('nexttxt').innerHTML='🏆 已經是最高的 <b>30 天</b>了！';$('nextbar').style.width='100%'}
+else{const a=addM(s,st0),b=addM(s,nx),left=dd(t,b),pc=Math.max(0,Math.min(100,(t-a)/(b-a)*100));
+ $('nexttxt').innerHTML=`再 <b>${left.toLocaleString('zh-TW')} 天</b>（${b.toLocaleDateString('zh-TW')}）升級成 <b>${days(nx/12)} 天</b>`;$('nextbar').style.width=pc.toFixed(1)+'%'}
+stair(y,cur,nx===null?null:nx/12,nx===null?0:days(nx/12));
 if(m<6)T.push(['next','info',`再 ${dd(t,addM(s,6))} 天就解鎖人生第一筆 3 天特休 🔓 撐住！`]);
 else if(nx!==null){const n=dd(t,addM(s,nx));if(n<=30)T.push(['next','ok',`🎉 再 ${n} 天，特休就從 ${cur} 天升級成 ${days(nx/12)} 天！`])}
 const anniv=m>=12&&m%12===0&&t.getDate()===s.getDate();
@@ -43,4 +80,5 @@ if(cur>=20)T.push(['senior','info',`特休 ${cur} 天，資深前輩請收下我
 const L=num('left');
 if(L>=5)T.push(['left','warn',`還有 ${L} 天特休沒休！不休白不休，揪團出去玩吧 ✈️（年度結束沒休完，可以折現約 ${fmt(num('sal')/30*L)} 元）`]);
 else if(L>0)T.push(['left','info',`還剩 ${L} 天特休，記得排進行事曆 😉`]);
-tips(T)})</script><script data-goatcounter="https://laborcalc-tw.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script></body></html>
+tips(T)});
+if(num('left')>0)$('more').open=true;</script><script data-goatcounter="https://laborcalc-tw.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script></body></html>
